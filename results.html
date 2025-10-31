@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - OSU! Mania Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1e1f22;
+            color: #dcdcdc;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        #resultsWallpaper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; 
+            background-color: #1e1f22; 
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            filter: blur(5px) brightness(0.2);
+            transform: scale(1.05);
+        }
+
+        .wrapper {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .song-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #songThumbnail {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.05);
+            flex-shrink: 0;
+        }
+
+        .song-text h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .song-text p {
+            margin: 4px 0 0;
+            color: #aaaaaa;
+            font-size: 1em;
+        }
+        
+        .grade-container {
+            font-size: 7em;
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .grade.s, .grade.ss { color: #E8D34A; }
+        .grade.a { color: #6CF381; }
+        .grade.b { color: #62B8F3; }
+        .grade.c { color: #F0A03E; }
+        .grade.d, .grade.f { color: #dcdcdc; }
+
+        .play-info {
+            text-align: center;
+            color: #aaaaaa;
+            font-size: 0.9em;
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 2.5em;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+        .stat-box .label {
+            font-size: 0.8em;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .graph-section {
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .graph-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #aaaaaa;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .graph-container {
+            position: relative;
+            height: 150px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 15px;
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .judgement-list .judgement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        .judgement-item:last-child { margin-bottom: 0; }
+        .judgement-item .bar { width: 4px; height: 20px; margin-right: 10px; border-radius: 2px; }
+        .judgement-item .name { font-weight: 600; width: 60px; color: #ffffff; }
+        .judgement-item .percent { color: #aaaaaa; width: 80px; text-align: right; margin-right: 15px; }
+        .judgement-item .count { font-weight: 700; color: #ffffff; }
+        
+        .bar.p-plus { background-color: #F8D448; }
+        .bar.p { background-color: #88E147; }
+        .bar.gr { background-color: #55C55A; }
+        .bar.go { background-color: #4AB9F3; }
+        .bar.b { background-color: #F0A03E; }
+        .bar.ms { background-color: #F15E5E; }
+
+        .hit-error-graph-container {
+             background-color: rgba(0,0,0,0.3);
+             border-radius: 4px;
+             position: relative;
+             height: 150px;
+        }
+        
+        .results-footer { margin-top: 30px; text-align: center; }
+        .results-footer button {
+            background-color: rgba(0,0,0,0.3);
+            color: #dcdcdc;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .results-footer button:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .failed-message { text-align: center; color: #F15E5E; font-size: 1.5em; font-weight: bold; margin-bottom: 15px; }
+
+        @media (max-width: 768px) {
+            .results-header { flex-direction: column; align-items: center; text-align: center; }
+            .grade-container { margin-top: 20px; }
+            .details-grid { grid-template-columns: 1fr; }
+            .song-info { flex-direction: column; }
+            .song-text h1 { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 隐藏的canvas用于截图 -->
+    <canvas id="screenshotCanvas" style="display: none; position: fixed; top: -9999px; left: -9999px;"></canvas>
+    <a id="downloadLink" style="display: none;"></a>
+
+    <div id="resultsWallpaper"></div>
+
+    <div class="wrapper">
+        <div class="results-header">
+            <div class="song-info">
+                <img id="songThumbnail" src="" alt="Song Thumbnail">
+                <div class="song-text">
+                    <h1 id="songTitle">N/A</h1>
+                    <p><span id="songArtist">N/A</span> - <span id="songVersion">N/A</span></p>
+                    <p>Mods: <span id="mods">None</span> | OD: <span id="od">N/A</span></p>
+                </div>
+            </div>
+            <div id="gradeDisplay" class="grade-container grade f">F</div>
+        </div>
+
+        <p class="play-info">Played by <span id="username">Guest</span> on <span id="playTimestamp"></span></p>
+        
+        <div id="failedMessageContainer" class="failed-message" style="display: none;">FAILED</div>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="value" id="finalScore">0</div>
+                <div class="label">Total Score</div>
+            </div>
+            <div class="stat-box">
+                <div class="value" id="accuracy">0.00%</div>
+                <div class="label">Accuracy</div>
+            </div>
+            <div class="stat-box">
+                <div class="value" id="maxCombo">0</div>
+                <div class="label">Max Combo</div>
+            </div>
+            <div class="stat-box">
+                <div class="value" id="averageError">0.00ms</div>
+                <div class="label">Avg Error</div>
+            </div>
+            <div class="stat-box">
+                <div class="value" id="unstableRate">N/A</div>
+                <div class="label">Unstable Rate</div>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="judgement-list">
+                <div class="judgement-item">
+                    <div class="bar p-plus"></div>
+                    <div class="name">MARV</div>
+                    <div class="percent">(<span id="percentPerfectPlus">0.00</span>%)</div>
+                    <div class="count" id="countPerfectPlus">0</div>
+                </div>
+                <div class="judgement-item">
+                    <div class="bar p"></div>
+                    <div class="name">PERF</div>
+                    <div class="percent">(<span id="percentPerfect">0.00</span>%)</div>
+                    <div class="count" id="countPerfect">0</div>
+                </div>
+                <div class="judgement-item">
+                    <div class="bar gr"></div>
+                    <div class="name">GREAT</div>
+                    <div class="percent">(<span id="percentGreat">0.00</span>%)</div>
+                    <div class="count" id="countGreat">0</div>
+                </div>
+                 <div class="judgement-item">
+                    <div class="bar go"></div>
+                    <div class="name">GOOD</div>
+                    <div class="percent">(<span id="percentGood">0.00</span>%)</div>
+                    <div class="count" id="countGood">0</div>
+                </div>
+                <div class="judgement-item">
+                    <div class="bar b"></div>
+                    <div class="name">BAD</div>
+                    <div class="percent">(<span id="percentBad">0.00</span>%)</div>
+                    <div class="count" id="countBad">0</div>
+                </div>
+                 <div class="judgement-item">
+                    <div class="bar ms"></div>
+                    <div class="name">MISS</div>
+                    <div class="percent">(<span id="percentMiss">0.00</span>%)</div>
+                    <div class="count" id="countMiss">0</div>
+                </div>
+            </div>
+            <div class="graph-section" style="padding: 10px; margin: 0;">
+                <h3 style="text-align: center;">HP History</h3>
+                <div class="graph-container" style="height: 190px;">
+                    <canvas id="hpGraphCanvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="graph-section">
+            <h3>Hit Error Distribution</h3>
+            <div class="graph-container">
+                 <canvas id="hitErrorGraphCanvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="results-footer">
+            <div class="button-group">
+                <button onclick="window.history.back()">◄ BACK</button>
+                <button onclick="downloadScreenshot()">📷 DOWNLOAD SCREENSHOT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatDateTime(date) {
+            const pad = (num) => num.toString().padStart(2, '0');
+            const M = pad(date.getMonth() + 1);
+            const D = pad(date.getDate());
+            const Y = date.getFullYear();
+            let h = date.getHours();
+            const m = pad(date.getMinutes());
+            const s = pad(date.getSeconds());
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12;
+            return `${M}/${D}/${Y} @ ${h}:${m}:${s} ${ampm}`;
+        }
+
+        function calculateUR(deviations) {
+            if (!deviations || deviations.length < 2) {
+                return null;
+            }
+            const mean = deviations.reduce((acc, val) => acc + val, 0) / deviations.length;
+            const stdDev = Math.sqrt(deviations.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / deviations.length);
+            return (stdDev * 10).toFixed(2);
+        }
+
+        function calculateAverageError(deviations) {
+            if (!deviations || deviations.length === 0) {
+                return null;
+            }
+            return deviations.reduce((acc, val) => acc + val, 0) / deviations.length;
+        }
+
+
+        // function calculateAverageAbsoluteError(deviations) {
+        //     if (!deviations || deviations.length === 0) {
+        //         return null;
+        //     }
+        //     return deviations.reduce((acc, val) => acc + Math.abs(val), 0) / deviations.length;
+        // }
+
+        function drawHpGraph(hpHistory) {
+            const canvas = document.getElementById('hpGraphCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            if (!hpHistory || hpHistory.length < 2) {
+                 canvas.style.display = 'none';
+                return;
+            }
+            
+            const data = hpHistory.map(p => p.hp);
+            const labels = hpHistory.map(p => p.time);
+
+            const segmentColors = [];
+            for (let i = 1; i < data.length; i++) {
+                if (data[i] < data[i-1]) {
+                    segmentColors.push({
+                        from: i - 1,
+                        to: i,
+                        color: 'rgba(255, 87, 87, 0.8)'
+                    });
+                }
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'HP',
+                        data: data,
+                        borderColor: 'rgba(173, 216, 230, 0.8)',
+                        backgroundColor: 'rgba(173, 216, 230, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.1,
+                        fill: true,
+                         segment: {
+                            borderColor: ctx => {
+                                for(const seg of segmentColors) {
+                                    if(ctx.p1DataIndex >= seg.from && ctx.p1DataIndex <= seg.to) return seg.color;
+                                }
+                                return 'rgba(144, 238, 144, 0.8)';
+                            }
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#aaa', stepSize: 25 }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function drawHitErrorGraph(hitDeviations, judgmentWindows) {
+            const canvas = document.getElementById('hitErrorGraphCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if (!hitDeviations || hitDeviations.length === 0) {
+                const container = canvas.parentElement;
+                container.style.display = 'flex';
+                container.style.alignItems = 'center';
+                container.style.justifyContent = 'center';
+                container.style.color = '#888';
+                container.style.fontSize = '0.9em';
+                container.innerHTML = `No Hit Data Available`;
+                return;
+            }
+
+            const chartData = {
+                datasets: [{
+                    label: 'Hit Deviation',
+                    data: hitDeviations.map((dev, index) => ({ x: index, y: dev })),
+                    backgroundColor: (context) => {
+                        const dev = Math.abs(context.raw.y);
+                        if (dev <= judgmentWindows.perfectPlus) return '#F8D448';
+                        if (dev <= judgmentWindows.perfect) return '#88E147';
+                        if (dev <= judgmentWindows.great) return '#55C55A';
+                        if (dev <= judgmentWindows.bad) return '#F0A03E'; 
+                        return '#F15E5E';
+                    },
+                    pointRadius: 2,
+                    pointHoverRadius: 4,
+                }]
+            };
+
+            const yAxisMax = Math.ceil(Math.max(...hitDeviations.map(Math.abs), judgmentWindows.bad || 130) / 10) * 10;
+
+            const config = {
+                type: 'scatter',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Hit ${context.dataIndex + 1}: ${context.raw.y.toFixed(2)}ms`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            min: -yAxisMax, max: yAxisMax,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#aaa' }
+                        }
+                    }
+                }
+            };
+            
+            const backgroundPlugin = {
+                id: 'customCanvasBackgroundColor',
+                beforeDraw: (chart, args, options) => {
+                    const { ctx, chartArea: { top, bottom, left, right, width, height}, scales: { y } } = chart;
+                    ctx.save();
+                    
+                    const drawWindow = (ms, color) => {
+                        if (ms === undefined) return;
+                        const yTop = y.getPixelForValue(ms);
+                        const yBottom = y.getPixelForValue(-ms);
+                        ctx.fillStyle = color;
+                        ctx.fillRect(left, yTop, width, yBottom - yTop);
+                    };
+
+                    drawWindow(judgmentWindows.bad, 'rgba(240, 160, 62, 0.1)');
+                    drawWindow(judgmentWindows.good, 'rgba(74, 185, 243, 0.1)');
+                    drawWindow(judgmentWindows.great, 'rgba(85, 197, 90, 0.1)');
+                    drawWindow(judgmentWindows.perfect, 'rgba(136, 225, 71, 0.1)');
+                    drawWindow(judgmentWindows.perfectPlus, 'rgba(248, 212, 72, 0.1)');
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(left, y.getPixelForValue(0));
+                    ctx.lineTo(right, y.getPixelForValue(0));
+                    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([3, 5]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+
+                    ctx.restore();
+                }
+            };
+
+            Chart.register(backgroundPlugin);
+            new Chart(ctx, config);
+        }
+
+        function downloadScreenshot() {
+                    const wrapper = document.querySelector('.wrapper');
+                    const canvas = document.getElementById('screenshotCanvas');
+                    const downloadLink = document.getElementById('downloadLink');
+                    
+                    if (!wrapper || !canvas) {
+                        alert('Screenshot capture failed!');
+                        return;
+                    }
+        
+                    // 获取wrapper的尺寸和位置
+                    const rect = wrapper.getBoundingClientRect();
+                    const scale = 2; // 提高截图质量
+                    
+                    canvas.width = rect.width * scale;
+                    canvas.height = rect.height * scale;
+                    
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 设置canvas背景色
+                    ctx.fillStyle = '#1e1f22';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // 创建截图数据
+                    const data = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="${rect.width}" height="${rect.height}">
+                            <foreignObject width="100%" height="100%">
+                                <div xmlns="http://www.w3.org/1999/xhtml">
+                                    ${wrapper.outerHTML}
+                                </div>
+                            </foreignObject>
+                        </svg>
+                    `;
+                    
+                    const blob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        // 绘制到canvas
+                        ctx.drawImage(img, 0, 0, rect.width, rect.height, 0, 0, canvas.width, canvas.height);
+                        
+                        // 创建下载链接
+                        canvas.toBlob(function(blob) {
+                            const username = document.getElementById('username').textContent || 'Guest';
+                            const songTitle = document.getElementById('songTitle').textContent || 'Unknown';
+                            const accuracy = document.getElementById('accuracy').textContent || '0.00%';
+                            const now = new Date();
+                            const timestamp = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+                            
+                            // 清理文件名中的非法字符
+                            const cleanFileName = (str) => str.replace(/[<>:"/\\|?*]/g, '_');
+                            
+                            const filename = `${cleanFileName(username)}_${cleanFileName(songTitle)}_${accuracy.replace('%', '')}_${timestamp}.png`;
+                            
+                            downloadLink.href = URL.createObjectURL(blob);
+                            downloadLink.download = filename;
+                            downloadLink.click();
+                        });
+                    };
+                    img.src = url;
+                    console.log("download run");
+                }
+        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+
+            const username = decodeURIComponent(params.get('username') || 'Guest');
+            const title = decodeURIComponent(params.get('title') || 'N/A');
+            const artist = decodeURIComponent(params.get('artist') || 'N/A');
+            const version = decodeURIComponent(params.get('version') || 'N/A');
+            const mods = decodeURIComponent(params.get('mods') || 'None');
+            const score = parseInt(params.get('score') || '0');
+            const acc = parseFloat(params.get('acc') || '0.00');
+            const maxCombo = parseInt(params.get('maxCombo') || '0');
+            const pp = parseInt(params.get('pp') || '0');
+            const p = parseInt(params.get('p') || '0');
+            const gr = parseInt(params.get('gr') || '0');
+            const go = parseInt(params.get('go') || '0');
+            const b = parseInt(params.get('b') || '0');
+            const m = parseInt(params.get('m') || '0');
+            const failed = params.get('failed') === 'true';
+            const od = parseFloat(params.get('od') || '7');
+
+            let hitDeviations = [], judgmentWindows = {}, hpHistory = [];
+            try {
+                hitDeviations = JSON.parse(sessionStorage.getItem('rhgResultsHitDeviations') || '[]');
+                judgmentWindows = JSON.parse(sessionStorage.getItem('rhgResultsJudgmentWindows') || '{}');
+                hpHistory = JSON.parse(sessionStorage.getItem('rhgResultsHpHistory') || '[]');
+            } catch (e) {
+                console.error("Error reading data from sessionStorage:", e);
+            }
+
+            document.getElementById('username').textContent = username;
+            document.getElementById('playTimestamp').textContent = formatDateTime(new Date());
+            document.getElementById('songTitle').textContent = title;
+            document.getElementById('songArtist').textContent = artist;
+            document.getElementById('songVersion').textContent = version;
+            document.getElementById('mods').textContent = mods;
+            document.getElementById('od').textContent = od.toFixed(1);
+
+            document.getElementById('finalScore').textContent = score.toLocaleString();
+            document.getElementById('accuracy').textContent = acc.toFixed(2) + '%';
+            document.getElementById('maxCombo').textContent = maxCombo.toLocaleString() + 'x';
+            
+            const ur = calculateUR(hitDeviations);
+            document.getElementById('unstableRate').textContent = ur !== null ? ur : 'N/A';
+            
+            document.getElementById('averageError').textContent = calculateAverageError(hitDeviations)?.toFixed(2) + 'ms' || 'N/A';
+
+
+            document.getElementById('countPerfectPlus').textContent = pp;
+            document.getElementById('countPerfect').textContent = p;
+            document.getElementById('countGreat').textContent = gr;
+            document.getElementById('countGood').textContent = go;
+            document.getElementById('countBad').textContent = b;
+            document.getElementById('countMiss').textContent = m;
+            
+            const totalNotes = pp + p + gr + go + b + m;
+            if (totalNotes > 0) {
+                document.getElementById('percentPerfectPlus').textContent = ((pp / totalNotes) * 100).toFixed(2);
+                document.getElementById('percentPerfect').textContent = ((p / totalNotes) * 100).toFixed(2);
+                document.getElementById('percentGreat').textContent = ((gr / totalNotes) * 100).toFixed(2);
+                document.getElementById('percentGood').textContent = ((go / totalNotes) * 100).toFixed(2);
+                document.getElementById('percentBad').textContent = ((b / totalNotes) * 100).toFixed(2);
+                document.getElementById('percentMiss').textContent = ((m / totalNotes) * 100).toFixed(2);
+            }
+
+            let wallpaperSrc = null;
+            try { wallpaperSrc = sessionStorage.getItem('rhgResultsWallpaperSrc'); } catch (e) { console.error("Error reading from sessionStorage:", e); }
+            if (wallpaperSrc) {
+                document.getElementById('resultsWallpaper').style.backgroundImage = `url('${wallpaperSrc}')`;
+                document.getElementById('songThumbnail').src = wallpaperSrc;
+            } else { document.getElementById('songThumbnail').style.display = 'none'; }
+            
+            const gradeDisplay = document.getElementById('gradeDisplay');
+            let grade = 'F', gradeClass = 'f'; 
+            if (failed) {
+                grade = 'F'; gradeClass = 'f'; 
+                document.getElementById('failedMessageContainer').style.display = 'block';
+            } else {
+                if (acc === 100) { grade = 'SS'; gradeClass = 'ss'; }
+                else if (acc >= 95) { grade = 'S'; gradeClass = 's'; }
+                else if (acc >= 90) { grade = 'A'; gradeClass = 'a'; }
+                else if (acc >= 80) { grade = 'B'; gradeClass = 'b'; }
+                else if (acc >= 70) { grade = 'C'; gradeClass = 'c'; }
+                else { grade = 'D'; gradeClass = 'd'; }
+            }
+            gradeDisplay.textContent = grade;
+            gradeDisplay.className = 'grade-container grade ' + gradeClass; 
+
+            drawHpGraph(hpHistory);
+            drawHitErrorGraph(hitDeviations, judgmentWindows);
+        });
+    </script>
+</body>
+</html>
