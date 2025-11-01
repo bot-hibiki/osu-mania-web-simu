@@ -663,20 +663,20 @@
             judgmentTextPopups: [],
             hitDeviations: [],
             accPos: {
-                x: 180,
-                y: 30
+                x: 350,
+                y: 10
             },
             comboPos: {
                 x: 180,
                 y: 200
             },
-            uiFont: "20px Arial",
-            comboFont: "36px Arial bold",
-            deviationFont: "18px Arial",
-            judgmentPopupFont: "24px 'Courier New', monospace", // Use monospace for judgment popups too if desired, or keep original
+            uiFont: "20px Comic Sans MS, sans-serif",
+            comboFont: "600 36px Comic Sans MS, sans-serif",
+            deviationFont: " 18px Comic Sans MS, sans-serif",
+            judgmentPopupFont: "24px cursive",
             resultsFontTitle: "48px Arial bold",
             resultsFontText: "24px Arial",
-            resultsGradeFont: "72px Arial Black",
+            resultsGradeFont: "72px fantasy",
             resultsDetailsFont: "20px Arial",
             audioOffsetMs: 0,
             hitErrorBar: {
@@ -2436,23 +2436,20 @@
             const playfieldStartX = getPlayfieldStartX();
             gameCtx.font = settings.uiFont;
             gameCtx.fillStyle = 'white';
-            gameCtx.textAlign = 'left';
+            gameCtx.textAlign = 'right';
             gameCtx.textBaseline = 'top';
             const accX = playfieldStartX + settings.accPos.x,
-                accY = settings.accPos.y;
+                  accY = settings.accPos.y;
             const comboX = playfieldStartX + settings.comboPos.x,
-                comboY = settings.comboPos.y;
-
-            gameCtx.fillText(`ACC: ${calculateAccuracy()}%`, accX, accY);
+                  comboY = settings.comboPos.y;
+            gameCtx.font = 
+            gameCtx.fillText(`${calculateAccuracy()}%`, accX, accY);
             gameCtx.font = settings.comboFont;
+
+            gameCtx.textAlign = 'center';
             gameCtx.fillText(`COMBO`, comboX, comboY);
-            // --- Modification for Centered Combo Display ---
             const comboText = `${gameFailed ? 0 : combo}`;
-            const comboTextWidth = gameCtx.measureText(comboText).width;
-            // Calculate the x position to center the combo text at the specified comboX coordinate
-            const centeredComboX = comboX - (comboTextWidth / 2);
-            // Draw the combo number centered at (comboX, comboY + offset)
-            gameCtx.fillText(comboText, centeredComboX, comboY + 35);
+            gameCtx.fillText(comboText, comboX, comboY + 35);
             gameCtx.font = settings.deviationFont;
             let devColor = 'white';
             if (currentHitDeviationString.includes('ms')) {
