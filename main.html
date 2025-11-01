@@ -138,7 +138,7 @@
         
         .control-group label {
             margin-right: 5px;
-            min-width: 100px;
+            min-width: 50px;
             flex-shrink: 0;
         }
         
@@ -160,7 +160,7 @@
         }
         
         .control-group input[type="number"].pos-input {
-            width: 70px;
+            width: 55px;
             flex-grow: 0;
         }
         
@@ -377,9 +377,9 @@
             </div>
 
             <div id="resultsContainerHTML" class="results-container" style="display:none; margin-top: 15px; padding:10px; background-color: #d4edda;">
-                <h4>Game Over!</h4>
+                <h4>游戏已结束</h4>
                 <p id="resultsMessage">Opening results in a new tab...</p>
-                <button id="manualResultsButton" style="display:none;">Open Results Manually</button>
+                <button id="manualResultsButton" style="display:none;">手动打开成绩结果页</button>
             </div>
         </div>
     </div>
@@ -437,12 +437,14 @@
             <h4>Canvas UI Elements</h4>
             <h5>Acc/Combo Display (on Game Canvas)</h5>
             <div class="control-group">
+                <label>显示Acc</label> <input type="checkbox" id="accEnabled" checked>
                 <label>Acc X:</label> <input type="number" id="accPosX" value="180" class="pos-input">
                 <label>Acc Y:</label> <input type="number" id="accPosY" value="30" class="pos-input">
             </div>
             <div class="control-group">
-                <label>Combo X:</label> <input type="number" id="comboPosX" value="180" class="pos-input">
-                <label>Combo Y:</label> <input type="number" id="comboPosY" value="200" class="pos-input">
+                <label>显示Combo</label> <input type="checkbox" id="comboEnabled" checked>
+                <label>X:</label> <input type="number" id="comboPosX" value="180" class="pos-input">
+                <label>Y:</label> <input type="number" id="comboPosY" value="200" class="pos-input">
             </div>
             <hr>
             <h5>Hit Error Bar (on Game Canvas)</h5>
@@ -467,7 +469,7 @@
         </div>
 
         <div class="controls-panel">
-            <h3>提示</h3><br>
+            <h3>提示</h3>
             <h4>如何游玩</h4>选择谱面文件（.osu格式）、BGM（音频）、背景图，检查按键绑定或使用触摸屏，按Start开始游玩<hr>
             <h4>延迟调整</h4>建议从-70ms开始尝试，不同谱面、设备、浏览器延迟不同。<hr>
             <h4>快捷键</h4>
@@ -484,6 +486,7 @@
                     <tr><td>主键盘 +</td><td>增加音频延迟</td></tr>
                 </tbody>
             </table>
+            <hr>
             <h4>其他信息</h4>
             原作者：Tyarnl_679
             <a href="https://www.bilibili.com/video/BV1Pn7yzbE5z">1</a>
@@ -556,8 +559,10 @@
         const keyBindsContainer = document.getElementById('keyBindsContainer');
         const DEFAULT_KEYBINDS = ['Z', 'X', '.', '/', ' ', 'J', 'K', 'L', ';', 'Q', 'W', 'E', 'R', 'U', 'I', 'O', 'P'];
 
+        const accEnableInput = document.getElementById('accEnabled');
         const accPosXInput = document.getElementById('accPosX');
         const accPosYInput = document.getElementById('accPosY');
+        const comboEnableInput = document.getElementById('comboEnabled');
         const comboPosXInput = document.getElementById('comboPosX');
         const comboPosYInput = document.getElementById('comboPosY');
         const hitErrorBarEnabledInput = document.getElementById('hitErrorBarEnabled');
@@ -662,10 +667,12 @@
             hitFeedback: [],
             judgmentTextPopups: [],
             hitDeviations: [],
+            accEnable: true,
             accPos: {
                 x: 350,
                 y: 10
             },
+            comboEnable: true,
             comboPos: {
                 x: 180,
                 y: 200
@@ -673,12 +680,12 @@
             uiFont: "20px Comic Sans MS, sans-serif",
             comboFont: "600 36px Comic Sans MS, sans-serif",
             deviationFont: " 18px Comic Sans MS, sans-serif",
-            judgmentPopupFont: "24px cursive",
+            judgmentPopupFont: "500 24px fantasy",
             resultsFontTitle: "48px Arial bold",
             resultsFontText: "24px Arial",
             resultsGradeFont: "72px fantasy",
             resultsDetailsFont: "20px Arial",
-            audioOffsetMs: 0,
+            audioOffsetMs: -70,
             hitErrorBar: {
                 enabled: true,
                 x: 0,
@@ -805,8 +812,10 @@
             });
             settings.keyBinds = newKeyBinds;
 
+            settings.accEnable = accEnableInput.checked;
             settings.accPos.x = parseInt(accPosXInput.value);
             settings.accPos.y = parseInt(accPosYInput.value);
+            settings.comboEnable = comboEnableInput.checked;
             settings.comboPos.x = parseInt(comboPosXInput.value);
             settings.comboPos.y = parseInt(comboPosYInput.value);
 
@@ -858,8 +867,10 @@
 
             generateKeybindUI();
 
+            accEnableInput.checked = settings.accEnable;
             accPosXInput.value = settings.accPos.x;
             accPosYInput.value = settings.accPos.y;
+            comboEnableInput.checked = settings.comboEnable;
             comboPosXInput.value = settings.comboPos.x;
             comboPosYInput.value = settings.comboPos.y;
 
@@ -1475,7 +1486,7 @@
             startButton.disabled = true;
             pauseButton.disabled = false;
             restartButton.disabled = false;
-
+            window.scrollTo(0,110);
             let cdInterval = setInterval(() => {
                 countdownValue--;
                 countdownElement.textContent = countdownValue;
@@ -1690,7 +1701,7 @@
                 const resultsWindow = window.open(resultsUrl, '_blank');
 
                 if (!resultsWindow || resultsWindow.closed || typeof resultsWindow.closed === 'undefined') {
-                    resultsMessageEl.innerHTML = "Results couldn't be opened automatically.<br>Your browser may have blocked it. Please allow popups or click the button below.";
+                    resultsMessageEl.innerHTML = "成绩结果页面打开失败了！<br>你可能忘了允许弹出窗口，或者点下面的按钮手动打开成绩结果页👇";
                     manualResultsButtonEl.style.display = 'inline-block';
                     manualResultsButtonEl.onclick = () => {
                         window.open(resultsUrl, '_blank');
@@ -2438,18 +2449,20 @@
             gameCtx.fillStyle = 'white';
             gameCtx.textAlign = 'right';
             gameCtx.textBaseline = 'top';
+
             const accX = playfieldStartX + settings.accPos.x,
                   accY = settings.accPos.y;
             const comboX = playfieldStartX + settings.comboPos.x,
                   comboY = settings.comboPos.y;
-            gameCtx.font = 
-            gameCtx.fillText(`${calculateAccuracy()}%`, accX, accY);
-            gameCtx.font = settings.comboFont;
-
-            gameCtx.textAlign = 'center';
-            gameCtx.fillText(`COMBO`, comboX, comboY);
-            const comboText = `${gameFailed ? 0 : combo}`;
-            gameCtx.fillText(comboText, comboX, comboY + 35);
+            if (settings.accEnable)
+                gameCtx.fillText(`${calculateAccuracy()}%`, accX, accY);
+            if (combo>0 && settings.comboEnable) {
+                gameCtx.font = settings.comboFont;
+                gameCtx.textAlign = 'center';
+                gameCtx.fillText(`COMBO`, comboX, comboY);
+                const comboText = `${gameFailed ? 0 : combo}`;
+                gameCtx.fillText(comboText, comboX, comboY + 35);
+            }
             gameCtx.font = settings.deviationFont;
             let devColor = 'white';
             if (currentHitDeviationString.includes('ms')) {
@@ -2537,6 +2550,7 @@
         }
 
         function drawHPBar() {
+            const heightfactor = 0.8;
             if (!settings.hpBar) return;
             const playfieldStartX = getPlayfieldStartX();
             const laneAreaWidth = settings.numLanes * settings.laneWidth;
@@ -2544,13 +2558,13 @@
             const barWidth = settings.hpBar.width,
                 barHeight = gameCanvas.height;
 
-            gameCtx.fillStyle = `rgba(50, 50, 50, 0.5)`;
-            gameCtx.fillRect(hpBarActualX, 0, barWidth, barHeight);
-            const hpFillHeight = (hp / 100) * barHeight;
-            gameCtx.fillStyle = `rgba(135, 206, 250, 0.9)`;
-            gameCtx.fillRect(hpBarActualX, barHeight - hpFillHeight, barWidth, hpFillHeight);
-            gameCtx.strokeStyle = `rgba(200, 200, 200, 0.7)`;
-            gameCtx.strokeRect(hpBarActualX, 0, barWidth, barHeight);
+            gameCtx.fillStyle = `rgba(50, 50, 50, 0.5)`; 
+            gameCtx.fillRect(hpBarActualX, (1-heightfactor)*barHeight, barWidth, barHeight);
+            const hpFillHeight = (hp / 100) * barHeight * heightfactor;
+            gameCtx.fillStyle = `rgba(135, 206, 250, 0.9)`; 
+            gameCtx.fillRect(hpBarActualX, barHeight, barWidth, -hpFillHeight);
+            gameCtx.strokeStyle = `rgba(200, 200, 200, 0.7)`; 
+            gameCtx.strokeRect(hpBarActualX, (1-heightfactor)*barHeight, barWidth, barHeight);
         }
 
         function proceedWithInitializationAfterSettings() {
