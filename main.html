@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
             -ms-user-select: none;
             user-select: none;
         }
+        
         #debugInfo {
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 12px;
@@ -26,40 +28,208 @@
             line-height: 1.2;
             margin: 0;
         }
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: transparent; display: flex; flex-direction: column; align-items: center; overflow-y: auto; position: relative; z-index: 1; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-        canvas#wallpaperCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; pointer-events: none; background-color: #000000; }
         
-        .game-outer-container { position: relative; margin-bottom: 20px; }
-        .game-container { position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.5);  }
-        canvas#gameCanvas { display: block; background-color: transparent; touch-action: none; }
-        audio { display: none; }
-
-        .controls-column { display: flex; flex-direction: row; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; position: relative; z-index: 2; }
-        .controls-panel { background-color: rgba(255, 255, 255, 0.92); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; width: 400px; min-width: 300px; box-sizing: border-box; transition: opacity 0.3s, visibility 0.3s; }
-        .controls-panel.hide-on-play { display: flex; flex-direction: column; }
-        .controls-panel h4, .controls-panel h3, .controls-panel h5 { margin-top: 0; margin-bottom: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
         
-        .control-group { margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-        .control-group.column { flex-direction: column; align-items: flex-start; }
-        .control-group.column .sub-group { display: flex; align-items: center; width: 100%; margin-bottom: 5px; }
-        .control-group.column .sub-group label { min-width: 120px; }
-        .control-group label { margin-right: 5px; min-width: 100px; flex-shrink: 0; }
-        .control-group input[type="text"], .control-group input[type="number"], .control-group input[type="color"], .control-group select, .control-group input[type="range"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; box-sizing: border-box; min-width: 50px; }
-        .control-group input[type="file"] { flex-grow: 1; }
-        .control-group input[type="number"].pos-input { width: 70px; flex-grow: 0; }
-        .control-group span.range-value, span.file-name { min-width: 30px; text-align: right; font-style: italic; font-size: 0.9em; color: #555; }
-        .mod-buttons button { flex-grow: 1; }
-        .mod-buttons button.active { background-color: #28a745; border-color: #28a745; }
-        #keyBindsContainer .keybind-input-group { display: flex; align-items: center; gap: 5px; width: 120px; }
-        #keyBindsContainer .keybind-input-group label { min-width: 25px; }
-        #keyBindsContainer .keybind-input-group input { width: 60px; text-align: center; }
-
-
-        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
-        button:hover { background-color: #0056b3; }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        #countdown, #resumeCountdown { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; color: white; text-shadow: 2px 2px 5px black; z-index: 100; display: none; }
+        canvas#wallpaperCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -10;
+            pointer-events: none;
+            background-color: #000000;
+        }
+        
+        .game-outer-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .game-container {
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        canvas#gameCanvas {
+            display: block;
+            background-color: transparent;
+            touch-action: none;
+        }
+        
+        audio {
+            display: none;
+        }
+        
+        .controls-column {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .controls-panel {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 420px;
+            min-width: 300px;
+            box-sizing: border-box;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .controls-panel.hide-on-play {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .controls-panel h4,
+        .controls-panel h3,
+        .controls-panel h5 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        
+        .control-group {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .control-group.column {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .control-group.column .sub-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .control-group.column .sub-group label {
+            min-width: 120px;
+        }
+        
+        .control-group label {
+            margin-right: 5px;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+        
+        .control-group input[type="text"],
+        .control-group input[type="number"],
+        .control-group input[type="color"],
+        .control-group select,
+        .control-group input[type="range"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex-grow: 1;
+            box-sizing: border-box;
+            min-width: 50px;
+        }
+        
+        .control-group input[type="file"] {
+            flex-grow: 1;
+        }
+        
+        .control-group input[type="number"].pos-input {
+            width: 70px;
+            flex-grow: 0;
+        }
+        
+        .control-group span.range-value,
+        span.file-name {
+            min-width: 30px;
+            text-align: right;
+            font-style: italic;
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .mod-buttons button {
+            flex-grow: 1;
+        }
+        
+        .mod-buttons button.active {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        
+        #keyBindsContainer .keybind-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 120px;
+        }
+        
+        #keyBindsContainer .keybind-input-group label {
+            min-width: 25px;
+        }
+        
+        #keyBindsContainer .keybind-input-group input {
+            width: 60px;
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        #countdown,
+        #resumeCountdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: white;
+            text-shadow: 2px 2px 5px black;
+            z-index: 100;
+            display: none;
+        }
+        
         #skipButton {
             position: absolute;
             bottom: 25%;
@@ -77,20 +247,45 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
+        
         #skipButton:hover {
             background-color: rgba(255, 255, 255, 0.2);
             border-color: #fff;
             color: #fff;
         }
-
-        .game-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
-        .game-info-item { background-color: #e9ecef; padding: 10px; border-radius: 4px; text-align: center; }
-        .game-info-item strong { display: block; margin-bottom: 5px; }
-        .song-metadata-display { margin-top: 10px; padding: 10px; background-color: #e0e0e0; border-radius: 4px; font-size: 0.9em;}
+        
+        .game-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .game-info-item {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .game-info-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .song-metadata-display {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
+
 <body>
-    <div id="debug-container"><pre id="debugInfo"></pre></div>
+    <div id="debug-container">
+        <pre id="debugInfo"></pre>
+    </div>
     <canvas id="wallpaperCanvas"></canvas>
     <h1>OSU! Mania Simulator</h1>
     <audio id="audioPlayer"></audio>
@@ -115,33 +310,27 @@
                 <button id="resumeButton" disabled>Resume</button>
                 <button id="restartButton" disabled>Restart</button>
             </div>
-             <hr>
+            <hr>
             <h5>Required Game Files</h5>
             <div class="control-group column">
-                <div class="sub-group"><label for="osuFile">Chart (.osu):</label> <input type="file" id="osuFile" accept=".osu,.txt"></div>
+                <div class="sub-group"><label for="osuFile">谱面文件 (.osu):</label> <input type="file" id="osuFile" accept=".osu,.txt"></div>
                 <span id="loadedOsuFileName" class="file-name">No chart loaded</span>
-                <div class="sub-group"><label for="audioFile">Audio:</label> <input type="file" id="audioFile" accept="audio/*"></div>
+                <div class="sub-group"><label for="audioFile">BGM:</label> <input type="file" id="audioFile" accept="audio/*"></div>
                 <span id="loadedAudioFileName" class="file-name">No audio loaded</span>
-                <div class="sub-group"><label for="backgroundFile">Background Image:</label> <input type="file" id="backgroundFile" accept="image/*"></div>
+                <div class="sub-group"><label for="backgroundFile">背景图:</label> <input type="file" id="backgroundFile" accept="image/*"></div>
                 <span id="loadedBgFileName" class="file-name">No background loaded</span>
             </div>
             <div class="control-group column" style="margin-top: 15px;">
-                 <div class="sub-group">
-                    <label for="backgroundOpacity">BG Opacity:</label>
+                <div class="sub-group">
+                    <label for="backgroundOpacity">背景图亮度:</label>
                     <input type="range" id="backgroundOpacity" min="0" max="1" step="0.05" value="0.3">
                     <span class="range-value" id="backgroundOpacityValue">0.15</span>
                 </div>
                 <div class="sub-group">
-                    <label for="backgroundBlur">BG Blur (px):</label>
+                    <label for="backgroundBlur">背景图模糊力度 (px):</label>
                     <input type="range" id="backgroundBlur" min="0" max="20" step="1" value="2">
                     <span class="range-value" id="backgroundBlurValue">2</span>
                 </div>
-            </div>
-            <hr>
-            <div class="song-metadata-display">
-                <strong>Title:</strong> <span id="songTitle">N/A</span><br>
-                <strong>Artist:</strong> <span id="songArtist">N/A</span><br>
-                <strong>Mapper/Ver:</strong> <span id="songVersion">N/A</span> (<span id="songSource">N/A</span>, BPM: <span id="songBPM">N/A</span> <span id="effectiveBPM"></span>, Keys: <span id="songKeys">N/A</span>)
             </div>
             <hr>
             <h5>Mods</h5>
@@ -153,7 +342,7 @@
                 <button id="modHD">HD</button>
                 <button id="modMR">MR</button>
             </div>
-             <div class="control-group mod-buttons">
+            <div class="control-group mod-buttons">
                 <button id="modSD">SD</button>
                 <button id="modCF">CF</button>
                 <button id="modAuto">AUTO</button>
@@ -162,13 +351,20 @@
             <h5>Settings Management</h5>
             <p style="font-size:0.8em; margin-top:-5px; margin-bottom:10px;">Loads `settings.json` on start. Save to download a new version.</p>
             <div class="control-group">
-                 <button id="saveSettingsButton">Save Settings</button>
-                 <label for="loadSettingsFile">Load From File:</label> <input type="file" id="loadSettingsFile" accept=".json">
+                <button id="saveSettingsButton">Save Settings</button>
+                <label for="loadSettingsFile">Load From File:</label> <input type="file" id="loadSettingsFile" accept=".json">
             </div>
         </div>
 
         <div class="controls-panel game-info-panel">
-             <h4>Game Info</h4>
+            <h4>Game Info</h4>
+            <div class="song-metadata-display">
+                <strong>Title:</strong> <span id="songTitle">N/A</span><br>
+                <strong>Artist:</strong> <span id="songArtist">N/A</span><br>
+                <strong>Mapper/Ver:</strong> <span id="songVersion">N/A</span> (<span id="songSource">N/A</span>, BPM:
+                <span id="songBPM">N/A</span> <span id="effectiveBPM"></span>, Keys: <span id="songKeys">N/A</span>)
+            </div>
+            <hr>
             <div class="game-info-grid">
                 <div class="game-info-item"><strong>Score:</strong> <span id="score">0</span></div>
                 <div class="game-info-item"><strong>Max Combo:</strong> <span id="maxCombo">0</span></div>
@@ -179,7 +375,7 @@
                 <div class="game-info-item"><strong>Bd:</strong> <span id="count-bad">0</span></div>
                 <div class="game-info-item"><strong>Ms:</strong> <span id="count-miss">0</span></div>
             </div>
-            
+
             <div id="resultsContainerHTML" class="results-container" style="display:none; margin-top: 15px; padding:10px; background-color: #d4edda;">
                 <h4>Game Over!</h4>
                 <p id="resultsMessage">Opening results in a new tab...</p>
@@ -189,27 +385,27 @@
     </div>
 
     <div class="controls-column">
-         <div class="controls-panel display-settings hide-on-play">
+        <div class="controls-panel display-settings hide-on-play">
             <h4>Display Settings</h4>
-             <div class="control-group">
-                <label for="playAreaHeight">Area Height (px):</label> <input type="number" id="playAreaHeight" value="800" min="200" max="1400" step="50">
-                <label for="laneWidth">Lane Width (px):</label> <input type="number" id="laneWidth" value="120" min="30" step="5">
+            <div class="control-group">
+                <label for="playAreaHeight">游玩区高度 (px):</label> <input type="number" id="playAreaHeight" value="800" min="200" max="1400" step="50">
+                <label for="laneWidth">轨道宽度 (px):</label> <input type="number" id="laneWidth" value="120" min="30" step="5">
             </div>
             <div class="control-group">
-                <label for="judgmentLineOffsetY">Judgeline Y Offset:</label> <input type="number" id="judgmentLineOffsetY" value="120" min="10" max="300" step="10">
+                <label for="judgmentLineOffsetY">视觉判定线高度:</label> <input type="number" id="judgmentLineOffsetY" value="120" min="10" max="300" step="10">
             </div>
             <div class="control-group">
-                <label for="playAreaOpacity">Play Area Opacity:</label>
+                <label for="playAreaOpacity">拖尾长度:</label>
                 <input type="range" id="playAreaOpacity" min="0.1" max="1" step="0.05" value="0.95">
                 <span class="range-value" id="playAreaOpacityValue">0.95</span>
             </div>
             <hr>
             <h5>Note Settings</h5>
             <div class="control-group">
-                <label for="noteSpeed">Note Speed (px/s):</label> <input type="number" id="noteSpeed" value="1600" min="100" step="50">
-                <label for="noteSize">Note Size (r, px):</label> <input type="number" id="noteSize" value="38" min="5" max="50">
+                <label for="noteSpeed">音符流速 (px/s):</label> <input type="number" id="noteSpeed" value="1600" min="100" step="50">
+                <label for="noteSize">音符大小 (r, px):</label> <input type="number" id="noteSize" value="38" min="5" max="50">
             </div>
-            <div class="control-group"> <label for="noteColor">Note Color:</label> <input type="color" id="noteColor" value="#00ffff"> </div>
+            <div class="control-group"> <label for="noteColor">音符颜色:</label> <input type="color" id="noteColor" value="#00ffff"> </div>
             <div class="control-group">
                 <label for="lnTailRenderOffsetMs">LN Tail Offset (ms):</label> <input type="number" id="lnTailRenderOffsetMs" value="80" step="5">
             </div>
@@ -229,19 +425,14 @@
                 <input type="text" id="overallDifficultyDisplay" value="N/A (Load Chart)" readonly style="background-color: #eee; text-align: center; flex-grow: 0; width: 150px; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
             </div>
             <p style="font-size: 0.8em; margin-top: 5px;">
-                P+: ±16ms<br>
-                P: ±(64 - 3*OD)ms<br>
-                Gr: ±(97 - 3*OD)ms<br>
-                Go: ±(112 - 3*OD)ms<br>
-                Bd: ±(127 - 3*OD)ms<br>
-                Easy (EZ) mod multiplies all windows by 1.4.
+                P+: ±16ms<br> P: ±(64 - 3*OD)ms<br> Gr: ±(97 - 3*OD)ms<br> Go: ±(112 - 3*OD)ms<br> Bd: ±(127 - 3*OD)ms<br> Easy (EZ) mod multiplies all windows by 1.4.
             </p>
             <hr>
             <h5>Keybinds</h5>
             <div id="keyBindsContainer" class="control-group">
             </div>
         </div>
-        
+
         <div class="controls-panel ui-settings hide-on-play">
             <h4>Canvas UI Elements</h4>
             <h5>Acc/Combo Display (on Game Canvas)</h5>
@@ -253,11 +444,11 @@
                 <label>Combo X:</label> <input type="number" id="comboPosX" value="180" class="pos-input">
                 <label>Combo Y:</label> <input type="number" id="comboPosY" value="200" class="pos-input">
             </div>
-            <hr> 
+            <hr>
             <h5>Hit Error Bar (on Game Canvas)</h5>
-             <div class="control-group"> <label for="hitErrorBarEnabled">Enable:</label> <input type="checkbox" id="hitErrorBarEnabled" checked> </div>
+            <div class="control-group"> <label for="hitErrorBarEnabled">Enable:</label> <input type="checkbox" id="hitErrorBarEnabled" checked> </div>
             <div class="control-group">
-                <label>X Offset:</label> <input type="number" id="hitErrorBarX" value="0" class="pos-input"> 
+                <label>X Offset:</label> <input type="number" id="hitErrorBarX" value="0" class="pos-input">
                 <label>Y Pos:</label> <input type="number" id="hitErrorBarY" value="775" class="pos-input">
             </div>
             <div class="control-group">
@@ -268,11 +459,37 @@
                 <label>Tick W:</label> <input type="number" id="hitErrorTickWidth" value="5" min="1" class="pos-input">
                 <label>Tick H:</label> <input type="number" id="hitErrorTickHeight" value="38" min="1" class="pos-input">
             </div>
-             <div class="control-group"> <label>Max Dev (ms):</label> <input type="number" id="hitErrorBarMaxDeviationMs" value="180" min="20"> </div>
-             <div class="control-group">
+            <div class="control-group"> <label>Max Dev (ms):</label> <input type="number" id="hitErrorBarMaxDeviationMs" value="180" min="20"> </div>
+            <div class="control-group">
                 <label>Indicator W:</label> <input type="number" id="hitErrorIndicatorWidth" value="15" min="4" class="pos-input">
                 <label>Indicator H:</label> <input type="number" id="hitErrorIndicatorHeight" value="18" min="4" class="pos-input">
             </div>
+        </div>
+
+        <div class="controls-panel">
+            <h3>提示</h3><br>
+            <h4>如何游玩</h4>选择谱面文件（.osu格式）、BGM（音频）、背景图，检查按键绑定或使用触摸屏，按Start开始游玩<hr>
+            <h4>延迟调整</h4>建议从-70ms开始尝试，不同谱面、设备、浏览器延迟不同。<hr>
+            <h4>快捷键</h4>
+            <table>
+                <thead>
+                    <tr><th>按键</th><th>功能</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>F11</td><td>开关全屏模式</td></tr>
+                    <tr><td>键盘左上角[~`]</td><td>重开游戏</td></tr>
+                    <tr><td>主键盘 3</td><td>降低流速</td></tr>
+                    <tr><td>主键盘 4</td><td>提高流速</td></tr>
+                    <tr><td>主键盘 -</td><td>减少音频延迟</td></tr>
+                    <tr><td>主键盘 +</td><td>增加音频延迟</td></tr>
+                </tbody>
+            </table>
+            <h4>其他信息</h4>
+            原作者：Tyarnl_679
+            <a href="https://www.bilibili.com/video/BV1Pn7yzbE5z">1</a>
+            <a href="https://www.bilibili.com/video/BV1KRysBZEn9">2</a>
+            <br>
+            <a href="https://github.com/bot-hibiki/osu-mania-web-simu/">本仓库</a>
         </div>
     </div>
 
@@ -281,12 +498,12 @@
         const gameCtx = gameCanvas.getContext('2d');
         const wallpaperCanvas = document.getElementById('wallpaperCanvas');
         const wallpaperCtx = wallpaperCanvas.getContext('2d');
-        const gameInnerContainer = document.getElementById('gameInnerContainer'); 
+        const gameInnerContainer = document.getElementById('gameInnerContainer');
         const countdownElement = document.getElementById('countdown');
-        const resumeCountdownElement = document.getElementById('resumeCountdown'); 
+        const resumeCountdownElement = document.getElementById('resumeCountdown');
         const audioPlayer = document.getElementById('audioPlayer');
         const skipButton = document.getElementById('skipButton');
-        
+
         const osuFileEl = document.getElementById('osuFile');
         const audioFileEl = document.getElementById('audioFile');
         const backgroundFileEl = document.getElementById('backgroundFile');
@@ -316,29 +533,29 @@
         const restartButton = document.getElementById('restartButton');
         const saveSettingsButton = document.getElementById('saveSettingsButton');
         const loadSettingsFileEl = document.getElementById('loadSettingsFile');
-        
+
         const playAreaHeightInput = document.getElementById('playAreaHeight');
         const laneWidthInput = document.getElementById('laneWidth');
         const judgmentLineOffsetYInput = document.getElementById('judgmentLineOffsetY');
-        const playAreaOpacityInput = document.getElementById('playAreaOpacity'); 
-        const playAreaOpacityValueEl = document.getElementById('playAreaOpacityValue'); 
+        const playAreaOpacityInput = document.getElementById('playAreaOpacity');
+        const playAreaOpacityValueEl = document.getElementById('playAreaOpacityValue');
         const noteSpeedInput = document.getElementById('noteSpeed');
         const noteSizeInput = document.getElementById('noteSize');
         const noteColorInput = document.getElementById('noteColor');
-        const lnTailRenderOffsetMsInput = document.getElementById('lnTailRenderOffsetMs'); 
+        const lnTailRenderOffsetMsInput = document.getElementById('lnTailRenderOffsetMs');
         const shortLnThresholdMsInput = document.getElementById('shortLnThresholdMs');
-        
+
         const backgroundOpacityInput = document.getElementById('backgroundOpacity');
         const backgroundOpacityValueEl = document.getElementById('backgroundOpacityValue');
         const backgroundBlurInput = document.getElementById('backgroundBlur');
         const backgroundBlurValueEl = document.getElementById('backgroundBlurValue');
-        
+
         const audioOffsetMsInput = document.getElementById('audioOffsetMs');
         const overallDifficultyDisplayEl = document.getElementById('overallDifficultyDisplay');
 
         const keyBindsContainer = document.getElementById('keyBindsContainer');
         const DEFAULT_KEYBINDS = ['Z', 'X', '.', '/', ' ', 'J', 'K', 'L', ';', 'Q', 'W', 'E', 'R', 'U', 'I', 'O', 'P'];
-        
+
         const accPosXInput = document.getElementById('accPosX');
         const accPosYInput = document.getElementById('accPosY');
         const comboPosXInput = document.getElementById('comboPosX');
@@ -353,7 +570,7 @@
         const hitErrorBarMaxDeviationMsInput = document.getElementById('hitErrorBarMaxDeviationMs');
         const hitErrorIndicatorWidthInput = document.getElementById('hitErrorIndicatorWidth');
         const hitErrorIndicatorHeightInput = document.getElementById('hitErrorIndicatorHeight');
-        const resultsContainerHTML = document.getElementById('resultsContainerHTML'); 
+        const resultsContainerHTML = document.getElementById('resultsContainerHTML');
 
         const modEZButton = document.getElementById('modEZ');
         const modNFButton = document.getElementById('modNF');
@@ -367,93 +584,130 @@
 
         const debugContainer = document.getElementById('debug-container');
         const debugInfoEl = document.getElementById('debugInfo');
-        
+
         let debugInfoEnabled = true;
         let frameCount = 0;
         let fps = 0;
         let lastFpsUpdateTime = 0;
-        
-        let originalSongData = null; 
-        let currentSongData = null;  
+
+        let originalSongData = null;
+        let currentSongData = null;
         let backgroundImage = null;
         let backgroundSrcForResults = null;
-        let osuFileLoaded = false, audioFileLoaded = false, backgroundFileLoaded = false;
+        let osuFileLoaded = false,
+            audioFileLoaded = false,
+            backgroundFileLoaded = false;
 
         let activeNotes = [];
         let isLaneHeld = [];
-        let gameTime = 0, rawPerformanceTime = 0, gameStartTime = 0, lastFrameTime = 0;
-        let isPlaying = false, isPaused = false, isGameOver = false, isResuming = false; 
+        let gameTime = 0,
+            rawPerformanceTime = 0,
+            gameStartTime = 0,
+            lastFrameTime = 0;
+        let isPlaying = false,
+            isPaused = false,
+            isGameOver = false,
+            isResuming = false;
         let isEndingGame = false;
-        let countdownValue = 3, resumeCountdownValue = 3, animationFrameId = null; 
-        let totalPausedTime = 0, pauseStartTime = 0;
-        
-        const SCORE_CAP = 1000000; 
-        let score = 0; 
-        let scoreCapReached = false; 
-        let baseScorePerNote = 0; 
-        let combo = 0, maxCombo = 0;
+        let countdownValue = 3,
+            resumeCountdownValue = 3,
+            animationFrameId = null;
+        let totalPausedTime = 0,
+            pauseStartTime = 0;
 
-        let judgments = { perfectPlus: 0, perfect: 0, great: 0, good: 0, bad: 0, miss: 0 };
-        let totalWeightedScore = 0; 
-        let totalNotesProcessed = 0; 
+        const SCORE_CAP = 1000000;
+        let score = 0;
+        let scoreCapReached = false;
+        let baseScorePerNote = 0;
+        let combo = 0,
+            maxCombo = 0;
+
+        let judgments = {
+            perfectPlus: 0,
+            perfect: 0,
+            great: 0,
+            good: 0,
+            bad: 0,
+            miss: 0
+        };
+        let totalWeightedScore = 0;
+        let totalNotesProcessed = 0;
         let currentHitDeviationString = "-";
 
         let hp = 100;
-        let activeHpChanges = []; 
+        let activeHpChanges = [];
         let hpHistory = [];
         let lastHpRecordTime = 0;
-        let lastMissTime = -Infinity; 
-        let gameFailed = false; 
-        
+        let lastMissTime = -Infinity;
+        let gameFailed = false;
+
         let timedHitDeviations = [];
 
         let settings = {
-            numLanes: 4, 
-            laneWidth: 90, 
-            judgmentLineOffsetY: 10, 
-            keyBinds: ['Z', 'X', '.', "/"], 
-            noteColor: '#00dddd', 
-            noteSize: 42, 
-            noteSpeed: 1400, 
+            numLanes: 4,
+            laneWidth: 90,
+            judgmentLineOffsetY: 10,
+            keyBinds: ['Z', 'X', '.', "/"],
+            noteColor: '#00dddd',
+            noteSize: 42,
+            noteSpeed: 1400,
             playAreaHeight: 700,
             playAreaOpacity: 1.0,
-            lnTailRenderOffsetMs: 80, 
+            lnTailRenderOffsetMs: 80,
             shortLnThresholdMs: 40,
-            overallDifficulty: 8, 
-            judgmentWindows: { perfectPlus: 17 },
-            hitFeedback: [], 
+            overallDifficulty: 8,
+            judgmentWindows: {
+                perfectPlus: 17
+            },
+            hitFeedback: [],
             judgmentTextPopups: [],
             hitDeviations: [],
-            accPos: { x: 180, y: 30 }, 
-            comboPos: { x: 180, y: 200 },
-            uiFont: "20px Arial", 
-            comboFont: "36px Arial bold", 
+            accPos: {
+                x: 180,
+                y: 30
+            },
+            comboPos: {
+                x: 180,
+                y: 200
+            },
+            uiFont: "20px Arial",
+            comboFont: "36px Arial bold",
             deviationFont: "18px Arial",
-            judgmentPopupFont: "24px Arial bold",
-            resultsFontTitle: "48px Arial bold", 
-            resultsFontText: "24px Arial", 
-            resultsGradeFont: "72px Arial Black", 
+            judgmentPopupFont: "24px 'Courier New', monospace", // Use monospace for judgment popups too if desired, or keep original
+            resultsFontTitle: "48px Arial bold",
+            resultsFontText: "24px Arial",
+            resultsGradeFont: "72px Arial Black",
             resultsDetailsFont: "20px Arial",
             audioOffsetMs: 0,
-            hitErrorBar: { 
-                enabled: true, 
-                x: 0, 
-                y: 620, 
-                width: 400, 
-                height: 8, 
-                tickWidth: 2, 
-                tickHeight: 10, 
-                maxDeviationMs: 150, 
-                indicatorWidth: 12, 
-                indicatorHeight: 16, 
-                ticks: [], 
-                averageDeviation: 0, 
-                displayAverageDeviation: 0 
+            hitErrorBar: {
+                enabled: true,
+                x: 0,
+                y: 620,
+                width: 400,
+                height: 8,
+                tickWidth: 2,
+                tickHeight: 10,
+                maxDeviationMs: 150,
+                indicatorWidth: 12,
+                indicatorHeight: 16,
+                ticks: [],
+                averageDeviation: 0,
+                displayAverageDeviation: 0
             },
-            mods: { ez: false, nf: false, ht: false, dt: false, hd: false, mr: false, sd: false, cf: false, auto: false },
-            hpBar: { 
+            mods: {
+                ez: false,
+                nf: false,
+                ht: false,
+                dt: false,
+                hd: false,
+                mr: false,
+                sd: false,
+                cf: false,
+                auto: false
+            },
+            hpBar: {
                 width: 20,
-                color: 'rgba(135, 206, 250, 0.9)', 
+                color: 'rgba(135, 206, 250, 0.9)',
                 backgroundColor: 'rgba(50, 50, 50, 0.5)'
             }
         };
@@ -467,11 +721,11 @@
             let windows = {
                 perfectPlus: settings.judgmentWindows.perfectPlus,
                 perfect: 64 - (3 * od),
-                great: 97 - (3 * od), 
+                great: 97 - (3 * od),
                 good: 112 - (3 * od),
                 bad: 127 - (3 * od)
             };
-            
+
             if (settings.mods.ez) {
                 for (const key in windows) {
                     windows[key] *= 1.4;
@@ -480,7 +734,7 @@
 
             return windows;
         }
-        
+
         function generateKeybindUI() {
             keyBindsContainer.innerHTML = '';
             isLaneHeld = new Array(settings.numLanes).fill(false);
@@ -496,8 +750,8 @@
                 input.type = 'text';
                 input.id = `keyBind${i}`;
                 let keyValue = settings.keyBinds[i] || '';
-                input.value = (keyValue === ' ') ? 'Space' : keyValue; 
-                input.maxLength = 5; 
+                input.value = (keyValue === ' ') ? 'Space' : keyValue;
+                input.maxLength = 5;
                 input.dataset.lane = i;
                 input.classList.add('keybind-input');
 
@@ -511,13 +765,15 @@
                         keyString = e.key.toUpperCase();
                         e.target.value = keyString;
                     }
-                    if (keyString.length > 1 && keyString !== ' ') { 
-                         e.target.value = keyString.length > 1 ? '' : keyString; 
+                    if (keyString.length > 1 && keyString !== ' ') {
+                        e.target.value = keyString.length > 1 ? '' : keyString;
                     }
                 });
 
                 input.addEventListener('keyup', (e) => {
-                    const changeEvent = new Event('change', { bubbles: true });
+                    const changeEvent = new Event('change', {
+                        bubbles: true
+                    });
                     e.target.dispatchEvent(changeEvent);
                 });
 
@@ -527,18 +783,18 @@
             }
         }
 
-        function updateSettingsFromUI() { 
+        function updateSettingsFromUI() {
             settings.playAreaHeight = parseInt(playAreaHeightInput.value);
             settings.laneWidth = parseInt(laneWidthInput.value);
             settings.judgmentLineOffsetY = parseInt(judgmentLineOffsetYInput.value);
-            settings.playAreaOpacity = parseFloat(playAreaOpacityInput.value); 
+            settings.playAreaOpacity = parseFloat(playAreaOpacityInput.value);
             settings.noteSpeed = parseFloat(noteSpeedInput.value);
             settings.noteSize = parseInt(noteSizeInput.value);
             settings.noteColor = noteColorInput.value;
-            settings.lnTailRenderOffsetMs = parseInt(lnTailRenderOffsetMsInput.value); 
+            settings.lnTailRenderOffsetMs = parseInt(lnTailRenderOffsetMsInput.value);
             settings.shortLnThresholdMs = parseInt(shortLnThresholdMsInput.value);
             settings.audioOffsetMs = parseInt(audioOffsetMsInput.value);
-            
+
             const keybindInputs = document.querySelectorAll('.keybind-input');
             const newKeyBinds = [];
             keybindInputs.forEach(input => {
@@ -548,7 +804,7 @@
                 newKeyBinds[lane] = value;
             });
             settings.keyBinds = newKeyBinds;
-            
+
             settings.accPos.x = parseInt(accPosXInput.value);
             settings.accPos.y = parseInt(accPosYInput.value);
             settings.comboPos.x = parseInt(comboPosXInput.value);
@@ -565,32 +821,33 @@
             settings.hitErrorBar.indicatorWidth = parseInt(hitErrorIndicatorWidthInput.value);
             settings.hitErrorBar.indicatorHeight = parseInt(hitErrorIndicatorHeightInput.value);
 
-            let totalWidth = settings.numLanes * settings.laneWidth + settings.hpBar.width; 
+            let totalWidth = settings.numLanes * settings.laneWidth + settings.hpBar.width;
             gameCanvas.width = totalWidth;
             gameCanvas.height = settings.playAreaHeight;
 
             settings.judgmentLineY = gameCanvas.height - settings.judgmentLineOffsetY;
             gameInnerContainer.style.backgroundColor = `transparent`;
 
-            playAreaOpacityValueEl.textContent = settings.playAreaOpacity.toFixed(2); 
-            
+            playAreaOpacityValueEl.textContent = settings.playAreaOpacity.toFixed(2);
+
             backgroundOpacityValueEl.textContent = backgroundOpacityInput.value;
             backgroundBlurValueEl.textContent = backgroundBlurInput.value;
 
-            drawWallpaper(); 
+            drawWallpaper();
         }
-        function applySettingsToUI() { 
+
+        function applySettingsToUI() {
             playAreaHeightInput.value = settings.playAreaHeight;
             laneWidthInput.value = settings.laneWidth;
             judgmentLineOffsetYInput.value = settings.judgmentLineOffsetY;
-            playAreaOpacityInput.value = settings.playAreaOpacity; 
+            playAreaOpacityInput.value = settings.playAreaOpacity;
             noteSpeedInput.value = settings.noteSpeed;
             noteSizeInput.value = settings.noteSize;
             noteColorInput.value = settings.noteColor;
             lnTailRenderOffsetMsInput.value = settings.lnTailRenderOffsetMs;
-            shortLnThresholdMsInput.value = settings.shortLnThresholdMs; 
+            shortLnThresholdMsInput.value = settings.shortLnThresholdMs;
             audioOffsetMsInput.value = settings.audioOffsetMs;
-            
+
             let odText;
             if (typeof settings.overallDifficulty === 'number') {
                 odText = settings.overallDifficulty.toFixed(2);
@@ -601,9 +858,9 @@
 
             generateKeybindUI();
 
-            accPosXInput.value = settings.accPos.x; 
+            accPosXInput.value = settings.accPos.x;
             accPosYInput.value = settings.accPos.y;
-            comboPosXInput.value = settings.comboPos.x; 
+            comboPosXInput.value = settings.comboPos.x;
             comboPosYInput.value = settings.comboPos.y;
 
             hitErrorBarEnabledInput.checked = settings.hitErrorBar.enabled;
@@ -625,9 +882,9 @@
             modMRButton.classList.toggle('active', settings.mods.mr);
             modSDButton.classList.toggle('active', settings.mods.sd);
             modCFButton.classList.toggle('active', settings.mods.cf);
-            modAutoButton.classList.toggle('active', settings.mods.auto); 
+            modAutoButton.classList.toggle('active', settings.mods.auto);
 
-            updateSettingsFromUI(); 
+            updateSettingsFromUI();
         }
 
         function checkGameReady() {
@@ -639,26 +896,31 @@
                 restartButton.disabled = true;
             }
         }
-        
-        osuFileEl.addEventListener('change', loadChartFile); 
+
+        osuFileEl.addEventListener('change', loadChartFile);
         audioFileEl.addEventListener('change', loadAudioFile);
         backgroundFileEl.addEventListener('change', loadBackgroundFile);
-        
+
         saveSettingsButton.addEventListener('click', saveSettings);
         loadSettingsFileEl.addEventListener('change', loadSettingsFromFile);
 
         startButton.addEventListener('click', startGame);
         pauseButton.addEventListener('click', pauseGame);
-        resumeButton.addEventListener('click', initiateResumeSequence); 
-        restartButton.addEventListener('click', () => { if (originalSongData) { resetGameUIAndPrepare(); startGame(); } });
+        resumeButton.addEventListener('click', initiateResumeSequence);
+        restartButton.addEventListener('click', () => {
+            if (originalSongData) {
+                resetGameUIAndPrepare();
+                startGame();
+            }
+        });
 
         skipButton.addEventListener('click', () => {
             const firstNoteTime = currentSongData?.notes[0]?.time;
             if (isPlaying && !isPaused && firstNoteTime && gameTime < firstNoteTime) {
                 const skipToTime = Math.max(gameTime, firstNoteTime - 3000);
                 const timeDifference = skipToTime - gameTime;
-                
-                gameStartTime -= timeDifference; 
+
+                gameStartTime -= timeDifference;
 
                 audioPlayer.currentTime = skipToTime / 1000;
                 gameTime = skipToTime;
@@ -669,14 +931,14 @@
         const allSettingsInputs = document.querySelectorAll('.controls-panel input, .controls-panel select');
         allSettingsInputs.forEach(el => {
             if (el.id === 'backgroundFile' || el.id === 'backgroundOpacity' || el.id === 'backgroundBlur') return;
-            
-            if (el.type === 'range' || el.id.toLowerCase().includes('opacity') || el.id.toLowerCase().includes('blur') || el.id === 'charScale') { 
+
+            if (el.type === 'range' || el.id.toLowerCase().includes('opacity') || el.id.toLowerCase().includes('blur') || el.id === 'charScale') {
                 el.addEventListener('input', updateSettingsFromUI);
             } else {
                 el.addEventListener('change', updateSettingsFromUI);
             }
         });
-        
+
         backgroundOpacityInput.addEventListener('input', updateSettingsFromUI);
         backgroundBlurInput.addEventListener('input', updateSettingsFromUI);
 
@@ -694,15 +956,17 @@
 
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
-        gameCanvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        gameCanvas.addEventListener('touchstart', handleTouchStart, {
+            passive: false
+        });
 
         window.addEventListener('resize', () => {
             wallpaperCanvas.width = window.innerWidth;
             wallpaperCanvas.height = window.innerHeight;
-            updateSettingsFromUI(); 
-            drawWallpaper(); 
+            updateSettingsFromUI();
+            drawWallpaper();
         });
-        
+
         function getActiveModsString() {
             const activeMods = [];
             if (settings.mods.ez) activeMods.push("EZ");
@@ -717,52 +981,73 @@
             if (activeMods.length === 0) return "None";
             return activeMods.join(", ");
         }
+
         function toggleMod(mod) {
-            if (mod === 'ht') { if (settings.mods.dt) settings.mods.dt = false; }
-            if (mod === 'dt') { if (settings.mods.ht) settings.mods.ht = false; }
-            if (mod === 'sd' || mod === 'cf') { if (settings.mods.nf) settings.mods.nf = false; if (settings.mods.auto) settings.mods.auto = false; }
-            if (mod === 'nf') { if (settings.mods.sd) settings.mods.sd = false; if (settings.mods.cf) settings.mods.cf = false; }
-            if (mod === 'auto') { if (settings.mods.sd) settings.mods.sd = false; if (settings.mods.cf) settings.mods.cf = false; }
+            if (mod === 'ht') {
+                if (settings.mods.dt) settings.mods.dt = false;
+            }
+            if (mod === 'dt') {
+                if (settings.mods.ht) settings.mods.ht = false;
+            }
+            if (mod === 'sd' || mod === 'cf') {
+                if (settings.mods.nf) settings.mods.nf = false;
+                if (settings.mods.auto) settings.mods.auto = false;
+            }
+            if (mod === 'nf') {
+                if (settings.mods.sd) settings.mods.sd = false;
+                if (settings.mods.cf) settings.mods.cf = false;
+            }
+            if (mod === 'auto') {
+                if (settings.mods.sd) settings.mods.sd = false;
+                if (settings.mods.cf) settings.mods.cf = false;
+            }
 
             if (mod === 'mr' && settings.numLanes % 2 !== 0) {
-                 alert("Mirror (MR) mod is only available for even key counts.");
-                 return;
+                alert("Mirror (MR) mod is only available for even key counts.");
+                return;
             }
-            
+
             settings.mods[mod] = !settings.mods[mod];
-            
-            applySettingsToUI(); 
+
+            applySettingsToUI();
             updateEffectiveBPMDisplay();
-            if (originalSongData) { 
-                 currentSongData = applyModsToSongData(JSON.parse(JSON.stringify(originalSongData)));
-                 if (currentSongData && currentSongData.notes && currentSongData.notes.length > 0) {
-                    baseScorePerNote = SCORE_CAP / currentSongData.notes.length; 
+            if (originalSongData) {
+                currentSongData = applyModsToSongData(JSON.parse(JSON.stringify(originalSongData)));
+                if (currentSongData && currentSongData.notes && currentSongData.notes.length > 0) {
+                    baseScorePerNote = SCORE_CAP / currentSongData.notes.length;
                 } else {
                     baseScorePerNote = 0;
                 }
             }
         }
+
         function applyModsToSongData(songDataToMod) {
             if (!songDataToMod || !songDataToMod.notes) return null;
             let rate = 1.0;
             if (settings.mods.ht) rate = 0.75;
             if (settings.mods.dt) rate = 1.5;
-            let moddedNotes = songDataToMod.notes.map(note => ({ 
-                ...note, 
+            let moddedNotes = songDataToMod.notes.map(note => ({
+                ...note,
                 time: note.time / rate,
                 endTime: note.isLN ? note.endTime / rate : undefined
             }));
             if (settings.mods.mr) {
                 if (settings.numLanes % 2 === 0) {
-                    moddedNotes = moddedNotes.map(note => ({ ...note, lane: (settings.numLanes - 1) - note.lane }));
+                    moddedNotes = moddedNotes.map(note => ({...note,
+                        lane: (settings.numLanes - 1) - note.lane
+                    }));
                 }
             }
             const displayBpm = songDataToMod.originalBPM ? songDataToMod.originalBPM * rate : songDataToMod.bpm * rate;
-            return { ...songDataToMod, notes: moddedNotes, bpm: displayBpm, originalBPM: songDataToMod.originalBPM || songDataToMod.bpm };
+            return {...songDataToMod,
+                notes: moddedNotes,
+                bpm: displayBpm,
+                originalBPM: songDataToMod.originalBPM || songDataToMod.bpm
+            };
         }
-        
-        function loadChartFile(event) { 
-            const file = event.target.files[0]; 
+
+        function loadChartFile(event) {
+            const file = event.target.files[0];
             if (!file) {
                 osuFileLoaded = false;
                 checkGameReady();
@@ -771,9 +1056,9 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    let parsedData = parseOsuFile(e.target.result); 
-                    parsedData.sourceFormat = ".osu"; 
-                    
+                    let parsedData = parseOsuFile(e.target.result);
+                    parsedData.sourceFormat = ".osu";
+
                     if (parsedData.od !== -1) {
                         settings.overallDifficulty = parsedData.od;
                     }
@@ -782,56 +1067,74 @@
                         settings.numLanes = parsedData.keyCount;
                         settings.keyBinds = DEFAULT_KEYBINDS.slice(0, settings.numLanes);
                     }
-                    
+
                     originalSongData = {
                         ...parsedData,
-                        notes: parsedData.notes.map(note => ({ ...note, time: note.time - (parsedData.audioLeadIn || 0), endTime: note.isLN ? note.endTime - (parsedData.audioLeadIn || 0) : undefined })),
-                        originalBPM: parsedData.bpm 
+                        notes: parsedData.notes.map(note => ({...note,
+                            time: note.time - (parsedData.audioLeadIn || 0),
+                            endTime: note.isLN ? note.endTime - (parsedData.audioLeadIn || 0) : undefined
+                        })),
+                        originalBPM: parsedData.bpm
                     };
                     originalSongData.notes.sort((a, b) => a.time - b.time);
-                    
+
                     osuFileLoaded = true;
                     loadedOsuFileNameEl.textContent = file.name;
                     resetGameUIAndPrepare();
                     checkGameReady();
                 } catch (err) {
                     alert(`Error loading .osu chart: ` + err.message);
-                    originalSongData = null; currentSongData = null; baseScorePerNote = 0;
+                    originalSongData = null;
+                    currentSongData = null;
+                    baseScorePerNote = 0;
                     osuFileLoaded = false;
                     loadedOsuFileNameEl.textContent = "Error loading chart.";
                     updateSongMetadataDisplay();
                     checkGameReady();
                 }
             };
-            reader.readAsText(file); 
-            event.target.value = null; 
+            reader.readAsText(file);
+            event.target.value = null;
         }
 
         function parseOsuFile(fileContent) {
             const lines = fileContent.split(/\r?\n/);
-            const data = { notes: [], bpm: 0, audioLeadIn: 0, title: "N/A", artist: "N/A", version: "N/A", od: -1, keyCount: 0 };
-            let currentSection = "", mode = -1;
+            const data = {
+                notes: [],
+                bpm: 0,
+                audioLeadIn: 0,
+                title: "N/A",
+                artist: "N/A",
+                version: "N/A",
+                od: -1,
+                keyCount: 0
+            };
+            let currentSection = "",
+                mode = -1;
             for (const line of lines) {
                 const trimmedLine = line.trim();
                 if (trimmedLine.startsWith("//") || trimmedLine === "") continue;
-                if (trimmedLine.startsWith("[")) { currentSection = trimmedLine; continue; }
+                if (trimmedLine.startsWith("[")) {
+                    currentSection = trimmedLine;
+                    continue;
+                }
                 if (currentSection === "[General]") {
                     if (trimmedLine.startsWith("Mode:")) mode = parseInt(trimmedLine.split(":")[1].trim());
                     if (trimmedLine.startsWith("AudioLeadIn:")) data.audioLeadIn = parseInt(trimmedLine.split(":")[1].trim()) || 0;
-                } else if (currentSection === "[Metadata]") { 
+                } else if (currentSection === "[Metadata]") {
                     if (trimmedLine.startsWith("Title:")) data.title = trimmedLine.split(":")[1].trim();
                     if (trimmedLine.startsWith("Artist:")) data.artist = trimmedLine.split(":")[1].trim();
                     if (trimmedLine.startsWith("Version:")) data.version = trimmedLine.split(":")[1].trim();
                 } else if (currentSection === "[Difficulty]") {
-                     if (trimmedLine.startsWith("CircleSize:")) {
+                    if (trimmedLine.startsWith("CircleSize:")) {
                         const cs = parseFloat(trimmedLine.split(":")[1].trim());
                         if (mode === 3) data.keyCount = Math.round(cs);
                     }
-                     if (trimmedLine.startsWith("OverallDifficulty:")) {
+                    if (trimmedLine.startsWith("OverallDifficulty:")) {
                         data.od = parseFloat(trimmedLine.split(":")[1].trim());
-                     }
+                    }
                 } else if (currentSection === "[TimingPoints]") {
-                    if (data.bpm === 0) { 
+                    if (data.bpm === 0) {
                         const parts = trimmedLine.split(',');
                         if (parts.length >= 2) {
                             const beatLength = parseFloat(parts[1]);
@@ -843,12 +1146,19 @@
                     if (mode !== 3) throw new Error(".osu file is not in Mania mode (Mode: 3).");
                     if (data.keyCount <= 0) throw new Error(`Could not determine key count (CircleSize) for this Mania chart.`);
 
-                    const parts = trimmedLine.split(','), x = parseInt(parts[0]), time = parseInt(parts[2]), type = parseInt(parts[3]);
+                    const parts = trimmedLine.split(','),
+                        x = parseInt(parts[0]),
+                        time = parseInt(parts[2]),
+                        type = parseInt(parts[3]);
                     const lane = Math.floor(x * data.keyCount / 512);
                     if (lane < 0 || lane >= data.keyCount) continue;
-                    
-                    const note = { time: time, lane: lane, isLN: false };
-                    if (type & 128) { 
+
+                    const note = {
+                        time: time,
+                        lane: lane,
+                        isLN: false
+                    };
+                    if (type & 128) {
                         note.isLN = true;
                         const extraParts = parts[5].split(':');
                         note.endTime = parseInt(extraParts[0]);
@@ -859,16 +1169,17 @@
             if (data.notes.length === 0) throw new Error("No valid hit objects found or incorrect osu!mania format.");
             return data;
         }
-        function loadAudioFile(event) { 
+
+        function loadAudioFile(event) {
             const file = event.target.files[0];
             if (file) {
-                audioPlayer.src = URL.createObjectURL(file); 
-                audioPlayer.load(); 
+                audioPlayer.src = URL.createObjectURL(file);
+                audioPlayer.load();
                 loadedAudioFileNameEl.textContent = file.name;
                 audioFileLoaded = true;
                 audioPlayer.oncanplaythrough = () => console.log("Audio ready.");
-                audioPlayer.onerror = () => { 
-                    alert("Error loading audio."); 
+                audioPlayer.onerror = () => {
+                    alert("Error loading audio.");
                     loadedAudioFileNameEl.textContent = "Error loading audio.";
                     audioFileLoaded = false;
                     checkGameReady();
@@ -911,9 +1222,17 @@
             }
             event.target.value = null;
         }
-        
-        function updateSongMetadataDisplay() { 
-            const displayData = currentSongData || originalSongData || { title: "N/A", artist: "N/A", version: "N/A", sourceFormat: "N/A", bpm: "N/A", originalBPM: "N/A", keyCount: "N/A"};
+
+        function updateSongMetadataDisplay() {
+            const displayData = currentSongData || originalSongData || {
+                title: "N/A",
+                artist: "N/A",
+                version: "N/A",
+                sourceFormat: "N/A",
+                bpm: "N/A",
+                originalBPM: "N/A",
+                keyCount: "N/A"
+            };
             songTitleEl.textContent = displayData.title;
             songArtistEl.textContent = displayData.artist;
             songVersionEl.textContent = displayData.version;
@@ -922,93 +1241,119 @@
             songKeysEl.textContent = displayData.keyCount || "N/A";
             updateEffectiveBPMDisplay();
         }
+
         function updateEffectiveBPMDisplay() {
             const displayData = currentSongData || originalSongData;
-            if (displayData && displayData.originalBPM && (settings.mods.ht || settings.mods.dt)) { 
+            if (displayData && displayData.originalBPM && (settings.mods.ht || settings.mods.dt)) {
                 let rate = 1.0;
                 if (settings.mods.ht) rate = 0.75;
                 if (settings.mods.dt) rate = 1.5;
-                const baseBPM = displayData.originalBPM; 
+                const baseBPM = displayData.originalBPM;
                 effectiveBPMEl.textContent = ` (${(baseBPM * rate).toFixed(0)} BPM)`;
             } else {
                 effectiveBPMEl.textContent = "";
             }
         }
-        
-        function saveSettings() { 
-            updateSettingsFromUI(); 
-            const settingsToSave = JSON.parse(JSON.stringify(settings)); 
-            
-            delete settingsToSave.hitFeedback; 
+
+        function saveSettings() {
+            updateSettingsFromUI();
+            const settingsToSave = JSON.parse(JSON.stringify(settings));
+
+            delete settingsToSave.hitFeedback;
             delete settingsToSave.judgmentTextPopups;
-            delete settingsToSave.hitDeviations; 
+            delete settingsToSave.hitDeviations;
             if (settingsToSave.hitErrorBar) {
-                 delete settingsToSave.hitErrorBar.ticks; 
-                 delete settingsToSave.hitErrorBar.displayAverageDeviation;
+                delete settingsToSave.hitErrorBar.ticks;
+                delete settingsToSave.hitErrorBar.displayAverageDeviation;
             }
-            
+
             const settingsJson = JSON.stringify(settingsToSave, null, 2);
-            const blob = new Blob([settingsJson], { type: "application/json" });
+            const blob = new Blob([settingsJson], {
+                type: "application/json"
+            });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
-            a.href = url; a.download = "settings.json";
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            URL.revokeObjectURL(url); console.log("Settings saved.");
+            a.href = url;
+            a.download = "settings.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            console.log("Settings saved.");
         }
 
-        function loadSettingsFromFile(event) { 
+        function loadSettingsFromFile(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     try {
                         const loadedFromFile = JSON.parse(e.target.result);
-                        processLoadedSettings(loadedFromFile); 
-                    } catch (err) { 
-                        alert("Error parsing settings file: " + err.message); 
+                        processLoadedSettings(loadedFromFile);
+                    } catch (err) {
+                        alert("Error parsing settings file: " + err.message);
                         console.error(err);
-                        proceedWithInitializationAfterSettings(); 
+                        proceedWithInitializationAfterSettings();
                     }
                 };
                 reader.readAsText(file);
             }
-            event.target.value = null; 
+            event.target.value = null;
         }
 
         function processLoadedSettings(loaded) {
-            const defaultHitErrorBarSettings = { enabled: true, x: 0, y: 620, width: 400, height: 5, tickWidth: 2, tickHeight: 15, maxDeviationMs: 150, indicatorWidth: 12, indicatorHeight: 16, ticks: [], averageDeviation: 0, displayAverageDeviation: 0 };
+            const defaultHitErrorBarSettings = {
+                enabled: true,
+                x: 0,
+                y: 620,
+                width: 400,
+                height: 5,
+                tickWidth: 2,
+                tickHeight: 15,
+                maxDeviationMs: 150,
+                indicatorWidth: 12,
+                indicatorHeight: 16,
+                ticks: [],
+                averageDeviation: 0,
+                displayAverageDeviation: 0
+            };
 
             const initialLaneCount = loaded.numLanes || 4;
 
-            settings = { 
-                ...settings, 
-                ...loaded,   
+            settings = {
+                ...settings,
+                ...loaded,
                 numLanes: initialLaneCount,
                 keyBinds: loaded.keyBinds || DEFAULT_KEYBINDS.slice(0, initialLaneCount),
                 hitErrorBar: {
                     ...defaultHitErrorBarSettings,
                     ...(loaded.hitErrorBar || {}),
-                    ticks: [], averageDeviation: 0, displayAverageDeviation: 0
+                    ticks: [],
+                    averageDeviation: 0,
+                    displayAverageDeviation: 0
                 },
-                hitFeedback: [], 
+                hitFeedback: [],
                 judgmentTextPopups: [],
                 hitDeviations: [],
             };
-            
+
             if (settings.keyBinds.length !== settings.numLanes) {
                 settings.keyBinds = DEFAULT_KEYBINDS.slice(0, settings.numLanes);
             }
-                                 
-            proceedWithInitializationAfterSettings(); 
-        }
-        
-        function resetGameUIAndPrepare() { 
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-            animationFrameId = null; 
 
-            isEndingGame = false; 
-            isPlaying = false; isPaused = false; isGameOver = false; isResuming = false; 
-            
+            proceedWithInitializationAfterSettings();
+        }
+
+        function resetGameUIAndPrepare() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+
+            isEndingGame = false;
+            isPlaying = false;
+            isPaused = false;
+            isGameOver = false;
+            isResuming = false;
+
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'flex');
 
             if (originalSongData) {
@@ -1018,24 +1363,38 @@
             } else {
                 currentSongData = null;
             }
-            
+
             if (currentSongData && currentSongData.notes && currentSongData.notes.length > 0) {
-                 baseScorePerNote = SCORE_CAP / currentSongData.notes.length; 
+                baseScorePerNote = SCORE_CAP / currentSongData.notes.length;
             } else {
-                baseScorePerNote = 0; 
+                baseScorePerNote = 0;
             }
 
             activeNotes = [];
-            gameTime = 0; rawPerformanceTime = 0; gameStartTime = 0; lastFrameTime = 0;
-            totalPausedTime = 0; pauseStartTime = 0;
-            
-            score = 0; scoreCapReached = false; 
-            combo = 0; maxCombo = 0;
-            
-            judgments = { perfectPlus: 0, perfect: 0, great: 0, good: 0, bad: 0, miss: 0 };
-            totalWeightedScore = 0; totalNotesProcessed = 0; 
+            gameTime = 0;
+            rawPerformanceTime = 0;
+            gameStartTime = 0;
+            lastFrameTime = 0;
+            totalPausedTime = 0;
+            pauseStartTime = 0;
+
+            score = 0;
+            scoreCapReached = false;
+            combo = 0;
+            maxCombo = 0;
+
+            judgments = {
+                perfectPlus: 0,
+                perfect: 0,
+                great: 0,
+                good: 0,
+                bad: 0,
+                miss: 0
+            };
+            totalWeightedScore = 0;
+            totalNotesProcessed = 0;
             currentHitDeviationString = "-";
-            settings.hitFeedback = []; 
+            settings.hitFeedback = [];
             settings.judgmentTextPopups = [];
             settings.hitDeviations = [];
             timedHitDeviations = [];
@@ -1049,27 +1408,34 @@
             hpHistory = [];
             lastHpRecordTime = 0;
             activeHpChanges = [];
-            lastMissTime = -Infinity; gameFailed = false;
+            lastMissTime = -Infinity;
+            gameFailed = false;
 
-            audioPlayer.pause(); audioPlayer.currentTime = 0;
+            audioPlayer.pause();
+            audioPlayer.currentTime = 0;
             let audioRate = 1.0;
             if (settings.mods.ht) audioRate = 0.75;
             if (settings.mods.dt) audioRate = 1.5;
             audioPlayer.playbackRate = audioRate;
 
-            updateSongMetadataDisplay(); 
+            updateSongMetadataDisplay();
             updatePersistentUI();
             countdownElement.style.display = 'none';
-            resumeCountdownElement.style.display = 'none'; 
-            resultsContainerHTML.style.display = 'none'; 
+            resumeCountdownElement.style.display = 'none';
+            resultsContainerHTML.style.display = 'none';
             skipButton.style.display = 'none';
-            pauseButton.disabled = true; resumeButton.disabled = true;
+            pauseButton.disabled = true;
+            resumeButton.disabled = true;
             checkGameReady();
-            
-            applySettingsToUI(); 
-            
-            clearGameCanvas(); drawLanes(); drawJudgmentLine(); drawHPBar(); 
-            drawStaticUIElements(); drawHitErrorBar(); 
+
+            applySettingsToUI();
+
+            clearGameCanvas();
+            drawLanes();
+            drawJudgmentLine();
+            drawHPBar();
+            drawStaticUIElements();
+            drawHitErrorBar();
         }
 
         function updateDebugInfo(deltaTime) {
@@ -1087,35 +1453,52 @@
             const renderObjects = activeNotes.length + settings.hitFeedback.length + settings.judgmentTextPopups.length;
 
             debugInfoEl.textContent = `帧率 (FPS): ${fps}\n` +
-                                      `渲染耗时: ${frameTime}ms\n` +
-                                      `渲染对象: ${renderObjects} 个`;
+                `渲染耗时: ${frameTime}ms\n` +
+                `渲染对象: ${renderObjects} 个`;
         }
 
-        function startGame() { 
+        function startGame() {
             if (!currentSongData || !currentSongData.notes || currentSongData.notes.length === 0) {
-                 alert("Required files not loaded or chart is empty.");
-                 return;
+                alert("Required files not loaded or chart is empty.");
+                return;
             }
-             if(!isPlaying && !isPaused && !isGameOver) { 
-                resetGameUIAndPrepare(); 
-             } else if (isGameOver) { 
+            if (!isPlaying && !isPaused && !isGameOver) {
                 resetGameUIAndPrepare();
-             }
+            } else if (isGameOver) {
+                resetGameUIAndPrepare();
+            }
 
-            isPlaying = false; countdownValue = 3;
-            countdownElement.textContent = countdownValue; countdownElement.style.display = 'block';
-            startButton.disabled = true; pauseButton.disabled = false; restartButton.disabled = false;
+            isPlaying = false;
+            countdownValue = 3;
+            countdownElement.textContent = countdownValue;
+            countdownElement.style.display = 'block';
+            startButton.disabled = true;
+            pauseButton.disabled = false;
+            restartButton.disabled = false;
 
             let cdInterval = setInterval(() => {
-                countdownValue--; countdownElement.textContent = countdownValue;
-                if (countdownValue <= 0) { clearInterval(cdInterval); countdownElement.style.display = 'none'; actuallyStartGame(); }
+                countdownValue--;
+                countdownElement.textContent = countdownValue;
+                if (countdownValue <= 0) {
+                    clearInterval(cdInterval);
+                    countdownElement.style.display = 'none';
+                    actuallyStartGame();
+                }
             }, 1000);
-         }
-        function actuallyStartGame() { 
-            isPlaying = true; isResuming = false; isGameOver = false; gameFailed = false; 
-            gameStartTime = performance.now(); lastFrameTime = gameStartTime; 
-            totalPausedTime = 0; 
-            hpHistory = [{ time: 0, hp: 100 }];
+        }
+
+        function actuallyStartGame() {
+            isPlaying = true;
+            isResuming = false;
+            isGameOver = false;
+            gameFailed = false;
+            gameStartTime = performance.now();
+            lastFrameTime = gameStartTime;
+            totalPausedTime = 0;
+            hpHistory = [{
+                time: 0,
+                hp: 100
+            }];
             lastHpRecordTime = 0;
 
             const firstNoteTime = currentSongData?.notes[0]?.time;
@@ -1133,41 +1516,51 @@
                 headMissed: false,
                 headDeviation: 0
             }));
-            
+
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'none');
-            
-            audioPlayer.currentTime = 0; 
+
+            audioPlayer.currentTime = 0;
             audioPlayer.play().catch(e => console.error("Audio play failed:", e));
-            if (animationFrameId) cancelAnimationFrame(animationFrameId); 
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
             animationFrameId = requestAnimationFrame(gameLoop);
         }
-        function pauseGame() { 
-            if (!isPlaying || isPaused || isResuming || isGameOver) return; 
+
+        function pauseGame() {
+            if (!isPlaying || isPaused || isResuming || isGameOver) return;
             isPaused = true;
-            pauseStartTime = performance.now(); audioPlayer.pause();
+            pauseStartTime = performance.now();
+            audioPlayer.pause();
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
             animationFrameId = null;
-            
+
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'flex');
-            
-            pauseButton.disabled = true; resumeButton.disabled = false;
-         }
-        function initiateResumeSequence() { 
+
+            pauseButton.disabled = true;
+            resumeButton.disabled = false;
+        }
+
+        function initiateResumeSequence() {
             if (!isPlaying || !isPaused || isResuming || isGameOver) return;
-            isResuming = true; 
-            
+            isResuming = true;
+
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'none');
-            
+
             resumeCountdownValue = 3;
             resumeCountdownElement.textContent = resumeCountdownValue;
             resumeCountdownElement.style.display = 'block';
-            pauseButton.disabled = true; 
-            resumeButton.disabled = true; 
-            
-            drawWallpaper(); clearGameCanvas(); 
-            drawLanes(); drawJudgmentLine(); drawNotes(); 
-            drawHitFeedback(); drawJudgmentTextPopups(); drawHitErrorBar(); 
-            drawHPBar(); drawStaticUIElements();
+            pauseButton.disabled = true;
+            resumeButton.disabled = true;
+
+            drawWallpaper();
+            clearGameCanvas();
+            drawLanes();
+            drawJudgmentLine();
+            drawNotes();
+            drawHitFeedback();
+            drawJudgmentTextPopups();
+            drawHitErrorBar();
+            drawHPBar();
+            drawStaticUIElements();
             let resumeCDInterval = setInterval(() => {
                 resumeCountdownValue--;
                 resumeCountdownElement.textContent = resumeCountdownValue;
@@ -1177,19 +1570,19 @@
                     actuallyResumeGame();
                 }
             }, 1000);
-         }
-         
-        function actuallyResumeGame() { 
+        }
+
+        function actuallyResumeGame() {
             isPaused = false;
-            isResuming = false; 
+            isResuming = false;
             totalPausedTime += performance.now() - pauseStartTime;
-            lastFrameTime = performance.now(); 
+            lastFrameTime = performance.now();
             audioPlayer.play().catch(e => console.error("Audio resume failed:", e));
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
             animationFrameId = requestAnimationFrame(gameLoop);
-            pauseButton.disabled = false; 
-         }
-        
+            pauseButton.disabled = false;
+        }
+
         function calculateScoreMultiplier() {
             let multiplier = 1.0;
             if (settings.mods.ez) multiplier *= 0.5;
@@ -1200,52 +1593,87 @@
         function endGame(failed = false) {
             if (isEndingGame) return;
             isEndingGame = true;
-            
+
+            if (failed) {
+                try {
+                    if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+                } catch (e) {
+                    console.error("Error pausing audio player in endGame:", e);
+                }
+            }
+
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'flex');
 
-            let username = prompt("Please enter your username for the results screen:", "Guest");
-            if (!username) { username = "Guest"; }
+            let username = prompt("输入成绩页显示的用户名", "Guest");
+            if (!username) {
+                username = "Guest";
+            }
 
-            isPlaying = false; isGameOver = true; isResuming = false;
-            
+            if (!failed) {
+                try {
+                    if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+                } catch (e) {
+                    console.error("Error pausing audio player in endGame:", e);
+                }
+            }
+
+            isPlaying = false;
+            isGameOver = true;
+            isResuming = false;
+
             if (animationFrameId) {
                 cancelAnimationFrame(animationFrameId);
-                animationFrameId = null; 
+                animationFrameId = null;
             }
-            
-            try { if (audioPlayer && !audioPlayer.paused) audioPlayer.pause(); } 
-            catch (e) { console.error("Error pausing audio player in endGame:", e); }
 
-            gameFailed = failed; 
+
+            gameFailed = failed;
             let finalScore = score * calculateScoreMultiplier();
-            let finalAccuracy = calculateAccuracy(), finalMaxCombo = maxCombo;
-            if (gameFailed) { finalScore = 0; finalMaxCombo = 0; }
+            let finalAccuracy = calculateAccuracy(),
+                finalMaxCombo = maxCombo;
+            if (gameFailed) {
+                finalScore = 0;
+                finalMaxCombo = 0;
+            }
             if ((settings.mods.sd || settings.mods.cf) && !failed) finalScore = 1;
 
             try {
                 if (backgroundSrcForResults) {
                     sessionStorage.setItem('rhgResultsWallpaperSrc', backgroundSrcForResults);
                 } else {
-                    sessionStorage.removeItem('rhgResultsWallpaperSrc'); 
+                    sessionStorage.removeItem('rhgResultsWallpaperSrc');
                 }
                 sessionStorage.setItem('rhgResultsHitDeviations', JSON.stringify(settings.hitDeviations));
                 sessionStorage.setItem('rhgResultsJudgmentWindows', JSON.stringify(getDynamicJudgmentWindows()));
                 sessionStorage.setItem('rhgResultsHpHistory', JSON.stringify(hpHistory));
-            } catch (e) { console.error("Error saving data to sessionStorage:", e); }
+            } catch (e) {
+                console.error("Error saving data to sessionStorage:", e);
+            }
 
             const resultsData = {
                 username: encodeURIComponent(username),
-                title: encodeURIComponent(currentSongData?.title || "N/A"), artist: encodeURIComponent(currentSongData?.artist || "N/A"),
-                version: encodeURIComponent(currentSongData?.version || "N/A"), mods: encodeURIComponent(getActiveModsString()),
-                score: Math.round(finalScore), acc: finalAccuracy, maxCombo: finalMaxCombo,
-                pp: judgments.perfectPlus, p: judgments.perfect, gr: judgments.great, go: judgments.good, b: judgments.bad, m: judgments.miss,
-                failed: gameFailed, od: getEffectiveOD()
+                title: encodeURIComponent(currentSongData?.title || "N/A"),
+                artist: encodeURIComponent(currentSongData?.artist || "N/A"),
+                version: encodeURIComponent(currentSongData?.version || "N/A"),
+                mods: encodeURIComponent(getActiveModsString()),
+                score: Math.round(finalScore),
+                acc: finalAccuracy,
+                maxCombo: finalMaxCombo,
+                pp: judgments.perfectPlus,
+                p: judgments.perfect,
+                gr: judgments.great,
+                go: judgments.good,
+                b: judgments.bad,
+                m: judgments.miss,
+                failed: gameFailed,
+                od: getEffectiveOD()
             };
             const params = new URLSearchParams(resultsData).toString();
-            
-            updatePersistentUI(); 
+
+            updatePersistentUI();
             checkGameReady();
-            pauseButton.disabled = true; resumeButton.disabled = true;
+            pauseButton.disabled = true;
+            resumeButton.disabled = true;
             skipButton.style.display = 'none';
 
             const resultsMessageEl = document.getElementById('resultsMessage');
@@ -1255,7 +1683,7 @@
             manualResultsButtonEl.style.display = 'none';
             manualResultsButtonEl.onclick = null;
 
-            resultsContainerHTML.style.display = 'block'; 
+            resultsContainerHTML.style.display = 'block';
 
             setTimeout(() => {
                 const resultsUrl = `results.html?${params}`;
@@ -1272,12 +1700,12 @@
                         resultsContainerHTML.style.display = 'none';
                     }, 4000);
                 }
-            }, 250); 
+            }, 250);
         }
 
-        function autoPlayLogic() { 
+        function autoPlayLogic() {
             if (!settings.mods.auto || !currentSongData || !currentSongData.notes) return;
-            
+
             for (let i = activeNotes.length - 1; i >= 0; i--) {
                 const note = activeNotes[i];
                 if (note.isFinished) continue;
@@ -1290,11 +1718,21 @@
                         combo++;
                         if (combo > maxCombo) maxCombo = combo;
                         recordAndDisplayDeviation(0, note.lane, 'perfectPlus');
-                        settings.hitFeedback.push({ lane: note.lane, time: performance.now(), judgment: 'perfectPlus', y: settings.judgmentLineY });
+                        settings.hitFeedback.push({
+                            lane: note.lane,
+                            time: performance.now(),
+                            judgment: 'perfectPlus',
+                            y: settings.judgmentLineY
+                        });
                     } else {
                         note.isFinished = true;
                         recordJudgment('perfectPlus', 0, note.lane);
-                        settings.hitFeedback.push({ lane: note.lane, time: performance.now(), judgment: 'perfectPlus', y: settings.judgmentLineY });
+                        settings.hitFeedback.push({
+                            lane: note.lane,
+                            time: performance.now(),
+                            judgment: 'perfectPlus',
+                            y: settings.judgmentLineY
+                        });
                     }
                 }
 
@@ -1304,66 +1742,83 @@
                     combo++;
                     if (combo > maxCombo) maxCombo = combo;
                     recordAndDisplayDeviation(0, note.lane, 'perfectPlus');
-                    
+
                     const finalJudgment = 'perfectPlus';
                     judgments[finalJudgment]++;
                     totalNotesProcessed++;
-                    totalWeightedScore += 1.0; 
-                    
+                    totalWeightedScore += 1.0;
+
                     let rawScoreGain = baseScorePerNote;
                     if (!scoreCapReached) {
-                       if (score + rawScoreGain >= SCORE_CAP) { score = SCORE_CAP; scoreCapReached = true; } 
-                       else { score += rawScoreGain; }
+                        if (score + rawScoreGain >= SCORE_CAP) {
+                            score = SCORE_CAP;
+                            scoreCapReached = true;
+                        } else {
+                            score += rawScoreGain;
+                        }
                     }
-                    settings.judgmentTextPopups.push({ lane: note.lane, type: finalJudgment, spawnTime: performance.now(), y: settings.judgmentLineY - 30 });
+                    settings.judgmentTextPopups.push({
+                        lane: note.lane,
+                        type: finalJudgment,
+                        spawnTime: performance.now(),
+                        y: settings.judgmentLineY - 30
+                    });
                 }
             }
-         }
-        
+        }
+
         function updateHP(deltaTime) {
-            if (isGameOver || deltaTime <= 0) return; 
+            if (isGameOver || deltaTime <= 0) return;
 
             const oldHp = hp;
 
             for (let i = activeHpChanges.length - 1; i >= 0; i--) {
                 const change = activeHpChanges[i];
                 const msToProcess = Math.min(deltaTime, change.remainingMs);
-                
+
                 hp += change.changePerMs * msToProcess;
                 change.remainingMs -= msToProcess;
                 if (change.remainingMs <= 0) activeHpChanges.splice(i, 1);
             }
 
-            if (isNaN(hp)) { 
+            if (isNaN(hp)) {
                 hp = 0;
             }
             hp = Math.max(0, Math.min(100, hp));
 
             if (hp !== oldHp && gameTime > lastHpRecordTime + 100) {
-                 hpHistory.push({ time: gameTime, hp: hp });
-                 lastHpRecordTime = gameTime;
+                hpHistory.push({
+                    time: gameTime,
+                    hp: hp
+                });
+                lastHpRecordTime = gameTime;
             }
 
-            if (hp <= 0 && !gameFailed && isPlaying && !isEndingGame && !settings.mods.nf) { 
-                hpHistory.push({ time: gameTime, hp: 0 });
-                endGame(true); 
+            if (hp <= 0 && !gameFailed && isPlaying && !isEndingGame && !settings.mods.nf) {
+                hpHistory.push({
+                    time: gameTime,
+                    hp: 0
+                });
+                endGame(true);
             }
         }
 
         function gameLoop(timestamp) {
-            if (isGameOver || isEndingGame) { 
+            if (isGameOver || isEndingGame) {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                animationFrameId = null; return; 
+                animationFrameId = null;
+                return;
             }
-            if (!isPlaying || isResuming) { 
-                if(animationFrameId !== null) animationFrameId = requestAnimationFrame(gameLoop); return; 
+            if (!isPlaying || isResuming) {
+                if (animationFrameId !== null) animationFrameId = requestAnimationFrame(gameLoop);
+                return;
             }
             const deltaTime = timestamp - lastFrameTime;
-            lastFrameTime = timestamp; 
+            lastFrameTime = timestamp;
             updateDebugInfo(deltaTime);
             rawPerformanceTime = (performance.now() - gameStartTime - totalPausedTime);
             gameTime = rawPerformanceTime + settings.audioOffsetMs;
-            
+
             const firstNoteTime = currentSongData?.notes[0]?.time;
             if (skipButton.style.display === 'block' && firstNoteTime && gameTime >= firstNoteTime - 5000) {
                 skipButton.style.display = 'none';
@@ -1377,54 +1832,81 @@
                 const sumOfDeviations = timedHitDeviations.reduce((acc, hit) => acc + hit.deviation, 0);
                 settings.hitErrorBar.averageDeviation = sumOfDeviations / timedHitDeviations.length;
             } else {
-                settings.hitErrorBar.averageDeviation *= 0.95; 
+                settings.hitErrorBar.averageDeviation *= 0.95;
                 if (Math.abs(settings.hitErrorBar.averageDeviation) < 0.1) {
                     settings.hitErrorBar.averageDeviation = 0;
                 }
             }
-            
+
             const smoothingFactor = 0.1;
             settings.hitErrorBar.displayAverageDeviation += (settings.hitErrorBar.averageDeviation - settings.hitErrorBar.displayAverageDeviation) * smoothingFactor;
 
-            updateHP(deltaTime); 
-            if (isGameOver || isEndingGame) { if (animationFrameId) cancelAnimationFrame(animationFrameId); animationFrameId = null; return; }
-            
+            updateHP(deltaTime);
+            if (isGameOver || isEndingGame) {
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+                return;
+            }
+
             updateNoteStateAndCheckMisses();
             if (settings.mods.auto) autoPlayLogic();
 
             if (!isResuming) {
-                clearGameCanvas(); drawLanes(); drawJudgmentLine(); drawNotes();
-                drawHitFeedback(); drawJudgmentTextPopups(); drawHitErrorBar(); 
-                drawHPBar(); drawStaticUIElements(); 
-                updatePersistentUI(); 
+                clearGameCanvas();
+                drawLanes();
+                drawJudgmentLine();
+                drawNotes();
+                drawHitFeedback();
+                drawJudgmentTextPopups();
+                drawHitErrorBar();
+                drawHPBar();
+                drawStaticUIElements();
+                updatePersistentUI();
             }
-            
+
             activeNotes = activeNotes.filter(n => !n.isFinished);
 
             if (isPlaying && !isPaused && !isGameOver && !isEndingGame && activeNotes.length === 0) {
                 const remainingNotesInChart = currentSongData.notes.length - (judgments.perfectPlus + judgments.perfect + judgments.great + judgments.good + judgments.bad + judgments.miss);
                 if (remainingNotesInChart === 0) {
-                   endGame(false); return; 
+                    endGame(false);
+                    return;
                 }
             }
-            if (!isGameOver && !isEndingGame && animationFrameId !== null) { animationFrameId = requestAnimationFrame(gameLoop); }
+            if (!isGameOver && !isEndingGame && animationFrameId !== null) {
+                animationFrameId = requestAnimationFrame(gameLoop);
+            }
         }
-        
+
         function handleKeyDown(event) {
             if (event.key === "Escape") {
                 event.preventDefault();
-                if (isPlaying && !isPaused && !isResuming) pauseGame(); 
+                if (isPlaying && !isPaused && !isResuming) pauseGame();
                 else if (isPaused) initiateResumeSequence();
                 return;
-            }
-            else if (event.code === "Backquote")
-            {
-                // if (/*originalSongData*/ isPlaying) {
-                    console.log("5dan");
-                    resetGameUIAndPrepare(); startGame(); 
-                    console.log("6dan");
-                    return ;
-                // }
+            } else if (event.code === "Backquote") {
+                event.preventDefault();
+                resetGameUIAndPrepare();
+                startGame();
+                return;
+            } else if (event.key === '3' || event.key == '4') {
+                if (event.key === '3') {
+                    noteSpeedInput.stepDown();
+                    noteSpeedInput.stepDown(); // Adjusts value based on input's step (50)
+                    updateSettingsFromUI(); // Apply the change to settings object
+                } else if (event.key === '4') {
+                    noteSpeedInput.stepUp();
+                    noteSpeedInput.stepUp(); // Adjusts value based on input's step (50)
+                    updateSettingsFromUI(); // Apply the change to settings object
+                }
+            } else if (event.key === '-' || event.key == '=') {
+                if (event.key === '-') {
+                    audioOffsetMsInput -= 5;
+                    updateSettingsFromUI(); // Apply the change to settings object
+                } else if (event.key === '=') {
+                    audioOffsetMsInput += 5;
+                    updateSettingsFromUI(); // Apply the change to settings object
+                }
             }
 
             if (settings.mods.auto || !isPlaying || isPaused || isGameOver || isResuming) return;
@@ -1433,7 +1915,9 @@
             if (laneIndex !== -1 && !isLaneHeld[laneIndex]) {
                 event.preventDefault();
                 isLaneHeld[laneIndex] = true;
-                processHit(laneIndex);
+                const inputTime = performance.now();
+                const preciseGameTime = inputTime - gameStartTime - totalPausedTime + settings.audioOffsetMs;
+                processHit(laneIndex, preciseGameTime);
             }
         }
 
@@ -1444,7 +1928,9 @@
             if (laneIndex !== -1) {
                 event.preventDefault();
                 isLaneHeld[laneIndex] = false;
-                processRelease(laneIndex);
+                const inputTime = performance.now();
+                const preciseGameTime = inputTime - gameStartTime - totalPausedTime + settings.audioOffsetMs;
+                processRelease(laneIndex, preciseGameTime);
             }
         }
 
@@ -1453,6 +1939,8 @@
             if (settings.mods.auto || !isPlaying || isPaused || isGameOver || isResuming) return;
             event.preventDefault();
 
+            const inputTime = performance.now();
+            const preciseGameTime = inputTime - gameStartTime - totalPausedTime + settings.audioOffsetMs;
             const rect = gameCanvas.getBoundingClientRect();
             const playfieldStartX = getPlayfieldStartX();
             const playfieldWidth = settings.numLanes * settings.laneWidth;
@@ -1463,7 +1951,7 @@
                     const relativeX = touchX - playfieldStartX;
                     const laneIndex = Math.floor(relativeX / settings.laneWidth);
                     if (laneIndex >= 0 && laneIndex < settings.numLanes) {
-                        processHit(laneIndex);
+                        processHit(laneIndex, preciseGameTime);
                     }
                 }
             }
@@ -1472,14 +1960,15 @@
         function getPlayfieldStartX() {
             return 0;
         }
-        function getLaneX(laneIndex) { 
-            return getPlayfieldStartX() + laneIndex * settings.laneWidth + settings.laneWidth / 2; 
+
+        function getLaneX(laneIndex) {
+            return getPlayfieldStartX() + laneIndex * settings.laneWidth + settings.laneWidth / 2;
         }
-        
-        function updateNoteStateAndCheckMisses() { 
-            if (settings.mods.auto || isGameOver || isEndingGame) return; 
-            const missWindow = getDynamicJudgmentWindows().bad; 
-            
+
+        function updateNoteStateAndCheckMisses() {
+            if (settings.mods.auto || isGameOver || isEndingGame) return;
+            const missWindow = getDynamicJudgmentWindows().bad;
+
             for (let i = activeNotes.length - 1; i >= 0; i--) {
                 const note = activeNotes[i];
                 if (note.isFinished) continue;
@@ -1488,28 +1977,28 @@
                     if (!note.headJudged && gameTime > note.time + missWindow) {
                         note.isFinished = true;
                         recordJudgment('miss', null, note.lane);
-                    }
-                    else if (note.headJudged && gameTime > note.endTime + missWindow) {
+                    } else if (note.headJudged && gameTime > note.endTime + missWindow) {
                         note.isFinished = true;
                         recordJudgment('bad', null, note.lane, true);
                     }
                 } else {
                     if (gameTime > note.time + missWindow) {
                         note.isFinished = true;
-                        recordJudgment('miss', null, note.lane); 
+                        recordJudgment('miss', null, note.lane);
                     }
                 }
             }
         }
-        
-        function processHit(laneIndex) { 
+
+        function processHit(laneIndex, preciseGameTime = null) {
             if (isGameOver || isEndingGame) return;
             if (skipButton.style.display === 'block') {
                 skipButton.style.display = 'none';
             }
             const currentWindows = getDynamicJudgmentWindows();
-            let bestNote = null, minAbsDeviation = Infinity;
-            
+            let bestNote = null,
+                minAbsDeviation = Infinity;
+
             for (let note of activeNotes) {
                 if (note.lane === laneIndex && !note.isFinished && !note.headJudged) {
                     const deviation = gameTime - note.time;
@@ -1519,9 +2008,9 @@
                     }
                 }
             }
-
+            const currentTime = preciseGameTime !== null ? preciseGameTime : gameTime;
             if (bestNote) {
-                const deviation = gameTime - bestNote.time;
+                const deviation = currentTime - bestNote.time;
                 let judgment = 'miss';
                 if (Math.abs(deviation) <= currentWindows.perfectPlus) judgment = 'perfectPlus';
                 else if (Math.abs(deviation) <= currentWindows.perfect) judgment = 'perfect';
@@ -1541,20 +2030,26 @@
                         bestNote.isFinished = true;
                         recordJudgment(judgment, deviation, laneIndex);
                     }
-                    settings.hitFeedback.push({ lane: laneIndex, time: performance.now(), judgment: judgment, y: settings.judgmentLineY });
+                    settings.hitFeedback.push({
+                        lane: laneIndex,
+                        time: performance.now(),
+                        judgment: judgment,
+                        y: settings.judgmentLineY
+                    });
                 }
             }
         }
-        
-        function processRelease(laneIndex) {
+
+        function processRelease(laneIndex, preciseGameTime) {
             if (isGameOver || isEndingGame) return;
             const currentWindows = getDynamicJudgmentWindows();
-            
+
             const ln = activeNotes.find(n => n.lane === laneIndex && n.isBeingHeld);
             if (!ln) return;
 
             ln.isBeingHeld = false;
-            const deviation = gameTime - ln.endTime;
+            const currentTime = preciseGameTime !== null ? preciseGameTime : gameTime;
+            const deviation = currentTime - ln.endTime;
 
             if (gameTime < ln.endTime - currentWindows.bad) {
                 ln.earlyReleased = true;
@@ -1563,75 +2058,105 @@
 
             if (Math.abs(deviation) <= currentWindows.bad) {
                 ln.isFinished = true;
-                
+
                 if (ln.headMissed || ln.earlyReleased) {
                     recordJudgment('bad', null, laneIndex, true);
                     return;
                 }
 
                 recordAndDisplayDeviation(deviation, laneIndex);
-                
+
                 combo++;
                 if (combo > maxCombo) maxCombo = combo;
 
                 const avgAbsDeviation = (Math.abs(ln.headDeviation) + Math.abs(deviation)) / 2;
-                
+
                 let finalJudgment = 'bad';
                 if (avgAbsDeviation <= currentWindows.perfectPlus) finalJudgment = 'perfectPlus';
                 else if (avgAbsDeviation <= currentWindows.perfect) finalJudgment = 'perfect';
                 else if (avgAbsDeviation <= currentWindows.great) finalJudgment = 'great';
                 else if (avgAbsDeviation <= currentWindows.good) finalJudgment = 'good';
-                
+
                 recordJudgment(finalJudgment, null, laneIndex, false, true);
             }
         }
-        
+
         function recordAndDisplayDeviation(deviation, lane, judgmentType) {
-             const roundedDev = Math.round(deviation);
+            const roundedDev = Math.round(deviation);
             currentHitDeviationString = `${roundedDev}ms`;
             settings.hitDeviations.push(roundedDev);
-            timedHitDeviations.push({ time: performance.now(), deviation: roundedDev });
+            timedHitDeviations.push({
+                time: performance.now(),
+                deviation: roundedDev
+            });
             if (settings.hitErrorBar.enabled) {
-                settings.hitErrorBar.ticks.push({ deviation: roundedDev, spawnTime: performance.now(), opacity: 1, windowsForColor: { ...getDynamicJudgmentWindows() } });
+                settings.hitErrorBar.ticks.push({
+                    deviation: roundedDev,
+                    spawnTime: performance.now(),
+                    opacity: 1,
+                    windowsForColor: {...getDynamicJudgmentWindows()
+                    }
+                });
             }
         }
 
         function recordJudgment(type, deviation = null, laneForPopup = null, isLNFailure = false, isLNFinal = false) {
-            if ((isGameOver || isEndingGame)) return; 
+            if ((isGameOver || isEndingGame)) return;
 
             if (settings.mods.sd && type !== 'perfectPlus' && type !== 'perfect' && !settings.mods.auto) {
-                hp = 0; endGame(true); return;
+                hp = 0;
+                endGame(true);
+                return;
             }
             if (settings.mods.cf && type === 'miss' && !settings.mods.auto) {
-                hp = 0; endGame(true); return;
+                hp = 0;
+                endGame(true);
+                return;
             }
 
             if (isLNFailure) {
                 type = 'bad';
                 judgments.bad++;
                 totalNotesProcessed++;
-                totalWeightedScore += (1/6);
+                totalWeightedScore += (1 / 6);
                 score += baseScorePerNote * 0.125;
             } else {
-                 judgments[type]++;
-                 totalNotesProcessed++;
-                 
-                 let rawScoreGain = 0;
-                 let accGain = 0;
-                 if (type === 'perfectPlus') { rawScoreGain = baseScorePerNote * 1.0; accGain = 1.0; }
-                 else if (type === 'perfect') { rawScoreGain = baseScorePerNote * 0.96875; accGain = 1.0; }
-                 else if (type === 'great') { rawScoreGain = baseScorePerNote * 0.5525; accGain = (2/3); }
-                 else if (type === 'good') { rawScoreGain = baseScorePerNote * 0.265; accGain = (1/3); }
-                 else if (type === 'bad') { rawScoreGain = baseScorePerNote * 0.125; accGain = (1/6); }
-                 else if (type === 'miss') { rawScoreGain = 0; accGain = 0; }
-             
-                 if (!scoreCapReached) {
-                     if (score + rawScoreGain >= SCORE_CAP) { score = SCORE_CAP; scoreCapReached = true; } 
-                     else { score += rawScoreGain; }
-                 }
-                 totalWeightedScore += accGain;
+                judgments[type]++;
+                totalNotesProcessed++;
+
+                let rawScoreGain = 0;
+                let accGain = 0;
+                if (type === 'perfectPlus') {
+                    rawScoreGain = baseScorePerNote * 1.0;
+                    accGain = 1.0;
+                } else if (type === 'perfect') {
+                    rawScoreGain = baseScorePerNote * 0.96875;
+                    accGain = 1.0;
+                } else if (type === 'great') {
+                    rawScoreGain = baseScorePerNote * 0.5525;
+                    accGain = (2 / 3);
+                } else if (type === 'good') {
+                    rawScoreGain = baseScorePerNote * 0.265;
+                    accGain = (1 / 3);
+                } else if (type === 'bad') {
+                    rawScoreGain = baseScorePerNote * 0.125;
+                    accGain = (1 / 6);
+                } else if (type === 'miss') {
+                    rawScoreGain = 0;
+                    accGain = 0;
+                }
+
+                if (!scoreCapReached) {
+                    if (score + rawScoreGain >= SCORE_CAP) {
+                        score = SCORE_CAP;
+                        scoreCapReached = true;
+                    } else {
+                        score += rawScoreGain;
+                    }
+                }
+                totalWeightedScore += accGain;
             }
-            
+
             if (!isLNFinal && !isLNFailure) {
                 if (type === 'miss' || type === 'bad') {
                     combo = 0;
@@ -1639,46 +2164,64 @@
                     combo++;
                     if (combo > maxCombo) maxCombo = combo;
                 }
-                 if (deviation !== null) {
+                if (deviation !== null) {
                     recordAndDisplayDeviation(deviation, laneForPopup, type);
-                 }
+                }
             }
-            
-            if (!settings.mods.auto) { 
+
+            if (!settings.mods.auto) {
                 if (type === 'miss' || isLNFailure || (isLNFinal && type === 'bad')) {
-                    activeHpChanges.push({ changePerMs: -5 / 500, remainingMs: 500 });
+                    activeHpChanges.push({
+                        changePerMs: -5 / 500,
+                        remainingMs: 500
+                    });
                     lastMissTime = gameTime;
                 } else {
-                    if (gameTime - lastMissTime > 1000) { 
-                        if (type === 'perfectPlus' || type === 'perfect') activeHpChanges.push({ changePerMs: 1.5 / 100, remainingMs: 100 }); 
-                        else if (type === 'great') activeHpChanges.push({ changePerMs: 0.5 / 500, remainingMs: 500 }); 
+                    if (gameTime - lastMissTime > 1000) {
+                        if (type === 'perfectPlus' || type === 'perfect') activeHpChanges.push({
+                            changePerMs: 1.5 / 100,
+                            remainingMs: 100
+                        });
+                        else if (type === 'great') activeHpChanges.push({
+                            changePerMs: 0.5 / 500,
+                            remainingMs: 500
+                        });
                     }
                 }
             }
 
             if (laneForPopup !== null) {
-                 settings.judgmentTextPopups.push({ lane: laneForPopup, type: type, spawnTime: performance.now(), y: settings.judgmentLineY - 30 });
+                settings.judgmentTextPopups.push({
+                    lane: laneForPopup,
+                    type: type,
+                    spawnTime: performance.now(),
+                    y: settings.judgmentLineY - 30
+                });
             }
-            if (!isEndingGame) updatePersistentUI(); 
+            if (!isEndingGame) updatePersistentUI();
         }
 
-        function calculateAccuracy() { 
+        function calculateAccuracy() {
             if (gameFailed || totalNotesProcessed === 0) return "0.00";
             return ((totalWeightedScore / totalNotesProcessed) * 100).toFixed(2);
         }
-        function updatePersistentUI() { 
-            scoreEl.textContent = gameFailed ? 0 : Math.round(score); 
+
+        function updatePersistentUI() {
+            scoreEl.textContent = gameFailed ? 0 : Math.round(score);
             maxComboEl.textContent = gameFailed ? 0 : maxCombo;
-            countPerfectPlusEl.textContent = judgments.perfectPlus; countPerfectEl.textContent = judgments.perfect;
-            countGreatEl.textContent = judgments.great; countGoodEl.textContent = judgments.good;
-            countBadEl.textContent = judgments.bad; countMissEl.textContent = judgments.miss;
+            countPerfectPlusEl.textContent = judgments.perfectPlus;
+            countPerfectEl.textContent = judgments.perfect;
+            countGreatEl.textContent = judgments.great;
+            countGoodEl.textContent = judgments.good;
+            countBadEl.textContent = judgments.bad;
+            countMissEl.textContent = judgments.miss;
         }
-        
-        function clearGameCanvas() { 
-            gameCtx.fillStyle = `rgba(0, 0, 0, ${settings.playAreaOpacity})`; 
+
+        function clearGameCanvas() {
+            gameCtx.fillStyle = `rgba(0, 0, 0, ${settings.playAreaOpacity})`;
             gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         }
-        
+
         function drawWallpaper() {
             wallpaperCtx.clearRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
             const opacity = parseFloat(backgroundOpacityInput.value);
@@ -1689,37 +2232,50 @@
                 wallpaperCtx.filter = `blur(${blur}px)`;
                 const canvasAspect = wallpaperCanvas.width / wallpaperCanvas.height;
                 const imgAspect = backgroundImage.naturalWidth / backgroundImage.naturalHeight;
-                let sx = 0, sy = 0, sWidth = backgroundImage.naturalWidth, sHeight = backgroundImage.naturalHeight;
-                if (imgAspect > canvasAspect) { sWidth = backgroundImage.naturalHeight * canvasAspect; sx = (backgroundImage.naturalWidth - sWidth) / 2; } 
-                else { sHeight = backgroundImage.naturalWidth / canvasAspect; sy = (backgroundImage.naturalHeight - sHeight) / 2; }
+                let sx = 0,
+                    sy = 0,
+                    sWidth = backgroundImage.naturalWidth,
+                    sHeight = backgroundImage.naturalHeight;
+                if (imgAspect > canvasAspect) {
+                    sWidth = backgroundImage.naturalHeight * canvasAspect;
+                    sx = (backgroundImage.naturalWidth - sWidth) / 2;
+                } else {
+                    sHeight = backgroundImage.naturalWidth / canvasAspect;
+                    sy = (backgroundImage.naturalHeight - sHeight) / 2;
+                }
                 wallpaperCtx.drawImage(backgroundImage, sx, sy, sWidth, sHeight, 0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
                 wallpaperCtx.restore();
             } else {
-                 wallpaperCtx.fillStyle = '#000000'; 
-                 wallpaperCtx.fillRect(0,0, wallpaperCanvas.width, wallpaperCanvas.height);
+                wallpaperCtx.fillStyle = '#000000';
+                wallpaperCtx.fillRect(0, 0, wallpaperCanvas.width, wallpaperCanvas.height);
             }
         }
 
-        function drawLanes() { 
+        function drawLanes() {
             const playfieldStartX = getPlayfieldStartX();
             const laneAreaWidth = settings.numLanes * settings.laneWidth;
-            gameCtx.strokeStyle = '#000'; 
+            gameCtx.strokeStyle = '#000';
             for (let i = 1; i < settings.numLanes; i++) {
                 const x = playfieldStartX + i * settings.laneWidth;
-                gameCtx.beginPath(); gameCtx.moveTo(x, 0); gameCtx.lineTo(x, gameCanvas.height); gameCtx.stroke();
+                gameCtx.beginPath();
+                gameCtx.moveTo(x, 0);
+                gameCtx.lineTo(x, gameCanvas.height);
+                gameCtx.stroke();
             }
-            gameCtx.strokeStyle = '#000'; 
+            gameCtx.strokeStyle = '#000';
             gameCtx.strokeRect(playfieldStartX, 0, laneAreaWidth, gameCanvas.height);
         }
-        function drawJudgmentLine() { 
+
+        function drawJudgmentLine() {
             const playfieldStartX = getPlayfieldStartX();
             const laneAreaWidth = settings.numLanes * settings.laneWidth;
-            gameCtx.strokeStyle = '#FFF'; gameCtx.lineWidth = 2;
-            gameCtx.beginPath(); 
-            gameCtx.moveTo(playfieldStartX, settings.judgmentLineY); 
-            gameCtx.lineTo(playfieldStartX + laneAreaWidth, settings.judgmentLineY); 
+            gameCtx.strokeStyle = '#FFF';
+            gameCtx.lineWidth = 2;
+            gameCtx.beginPath();
+            gameCtx.moveTo(playfieldStartX, settings.judgmentLineY);
+            gameCtx.lineTo(playfieldStartX + laneAreaWidth, settings.judgmentLineY);
             gameCtx.stroke();
-            gameCtx.lineWidth = 1; 
+            gameCtx.lineWidth = 1;
         }
 
         function drawNotes() {
@@ -1729,7 +2285,7 @@
             activeNotes.forEach(note => {
                 const x = getLaneX(note.lane);
                 const headY = settings.judgmentLineY - (note.time - gameTime) * pixelsPerMs;
-                
+
                 const durationMs = note.isLN ? note.endTime - note.time : 0;
                 const renderAsRegular = !note.isLN || (settings.shortLnThresholdMs > 0 && durationMs <= settings.shortLnThresholdMs);
 
@@ -1743,17 +2299,17 @@
                 } else {
                     const renderEndTime = note.endTime - settings.lnTailRenderOffsetMs;
                     let tailY = settings.judgmentLineY - (renderEndTime - gameTime) * pixelsPerMs;
-                    
+
                     let bodyTopY = tailY;
                     let bodyBottomY = headY;
-                    
+
                     if (note.isBeingHeld) {
                         bodyBottomY = settings.judgmentLineY;
                     }
 
                     const drawTop = Math.max(bodyTopY, 0);
                     const drawBottom = Math.min(bodyBottomY, gameCanvas.height);
-                    
+
                     if (drawBottom > drawTop) {
                         const r = parseInt(settings.noteColor.slice(1, 3), 16);
                         const g = parseInt(settings.noteColor.slice(3, 5), 16);
@@ -1788,79 +2344,144 @@
             gameCtx.lineWidth = 1;
         }
 
-        function drawHitFeedback() { 
-            const feedbackDuration = 300, now = performance.now();
+        function drawHitFeedback() {
+            const feedbackDuration = 300,
+                now = performance.now();
             settings.hitFeedback = settings.hitFeedback.filter(fb => now - fb.time < feedbackDuration);
             settings.hitFeedback.forEach(fb => {
-                const x = getLaneX(fb.lane), y = fb.y, progress = (now - fb.time) / feedbackDuration;
-                let color; 
-                 switch(fb.judgment) {
-                    case 'perfectPlus': color = 'rgba(255,215,0,'; break;
-                    case 'perfect': color = 'rgba(0,255,255,'; break; 
-                    case 'great': color = 'rgba(0,255,0,'; break;
-                    case 'good': color = 'rgba(255,255,0,'; break;
-                    case 'bad': color = 'rgba(255,165,0,'; break;    
-                    default: color = 'rgba(128,128,128,'; break; 
+                const x = getLaneX(fb.lane),
+                    y = fb.y,
+                    progress = (now - fb.time) / feedbackDuration;
+                let color;
+                switch (fb.judgment) {
+                    case 'perfectPlus':
+                        color = 'rgba(255,215,0,';
+                        break;
+                    case 'perfect':
+                        color = 'rgba(0,255,255,';
+                        break;
+                    case 'great':
+                        color = 'rgba(0,255,0,';
+                        break;
+                    case 'good':
+                        color = 'rgba(255,255,0,';
+                        break;
+                    case 'bad':
+                        color = 'rgba(255,165,0,';
+                        break;
+                    default:
+                        color = 'rgba(128,128,128,';
+                        break;
                 }
-                gameCtx.strokeStyle = color + (1 - progress) + ')'; 
-                gameCtx.lineWidth = 3 + progress * 5; 
-                const radius = settings.noteSize + progress * (settings.noteSize * 0.5); 
-                gameCtx.beginPath(); gameCtx.arc(x, y, radius, 0, Math.PI * 2); gameCtx.stroke();
+                gameCtx.strokeStyle = color + (1 - progress) + ')';
+                gameCtx.lineWidth = 3 + progress * 5;
+                const radius = settings.noteSize + progress * (settings.noteSize * 0.5);
+                gameCtx.beginPath();
+                gameCtx.arc(x, y, radius, 0, Math.PI * 2);
+                gameCtx.stroke();
             });
-            gameCtx.lineWidth = 1; 
+            gameCtx.lineWidth = 1;
         }
-        function drawJudgmentTextPopups() { 
-            const popupDuration = 500, now = performance.now();
+
+        function drawJudgmentTextPopups() {
+            const popupDuration = 500,
+                now = performance.now();
             settings.judgmentTextPopups = settings.judgmentTextPopups.filter(p => now - p.spawnTime < popupDuration);
             settings.judgmentTextPopups.forEach(popup => {
-                const x = getLaneX(popup.lane), y = popup.y - ((now - popup.spawnTime)/popupDuration)*20, alpha = 1 - ((now-popup.spawnTime)/popupDuration);
-                gameCtx.font = settings.judgmentPopupFont; gameCtx.textAlign = 'center'; gameCtx.textBaseline = 'middle';
-                let text, colorStr; 
-                 switch(popup.type){
-                    case 'perfectPlus':text="P+";colorStr="255,215,0";break;
-                    case 'perfect':text="P";colorStr="0,255,255";break;
-                    case 'great':text="G";colorStr="0,255,0";break;
-                    case 'good':text="Go";colorStr="255,255,0";break;
-                    case 'bad':text="B";colorStr="255,165,0";break;
-                    case 'miss':text="M";colorStr="128,128,128";break;
-                    default:text="";colorStr="255,255,255";break;
+                const x = getLaneX(popup.lane),
+                    y = popup.y - ((now - popup.spawnTime) / popupDuration) * 20,
+                    alpha = 1 - ((now - popup.spawnTime) / popupDuration);
+                gameCtx.font = settings.judgmentPopupFont;
+                gameCtx.textAlign = 'center';
+                gameCtx.textBaseline = 'middle';
+                let text, colorStr;
+                switch (popup.type) {
+                    case 'perfectPlus':
+                        text = "P+";
+                        colorStr = "255,215,0";
+                        break;
+                    case 'perfect':
+                        text = "P";
+                        colorStr = "0,255,255";
+                        break;
+                    case 'great':
+                        text = "G";
+                        colorStr = "0,255,0";
+                        break;
+                    case 'good':
+                        text = "Go";
+                        colorStr = "255,255,0";
+                        break;
+                    case 'bad':
+                        text = "B";
+                        colorStr = "255,165,0";
+                        break;
+                    case 'miss':
+                        text = "M";
+                        colorStr = "128,128,128";
+                        break;
+                    default:
+                        text = "";
+                        colorStr = "255,255,255";
+                        break;
                 }
-                gameCtx.fillStyle = `rgba(${colorStr},${alpha})`; gameCtx.fillText(text, x, y);
+                gameCtx.fillStyle = `rgba(${colorStr},${alpha})`;
+                gameCtx.fillText(text, x, y);
             });
-            gameCtx.textAlign = 'left'; gameCtx.textBaseline = 'alphabetic'; 
+            gameCtx.textAlign = 'left';
+            gameCtx.textBaseline = 'alphabetic';
         }
-        function drawStaticUIElements() { 
+
+        function drawStaticUIElements() {
             const playfieldStartX = getPlayfieldStartX();
-            gameCtx.font = settings.uiFont; gameCtx.fillStyle = 'white'; gameCtx.textAlign = 'left'; gameCtx.textBaseline = 'top';
-            const accX = playfieldStartX + settings.accPos.x, accY = settings.accPos.y;
-            const comboX = playfieldStartX + settings.comboPos.x, comboY = settings.comboPos.y;
+            gameCtx.font = settings.uiFont;
+            gameCtx.fillStyle = 'white';
+            gameCtx.textAlign = 'left';
+            gameCtx.textBaseline = 'top';
+            const accX = playfieldStartX + settings.accPos.x,
+                accY = settings.accPos.y;
+            const comboX = playfieldStartX + settings.comboPos.x,
+                comboY = settings.comboPos.y;
 
             gameCtx.fillText(`ACC: ${calculateAccuracy()}%`, accX, accY);
             gameCtx.font = settings.comboFont;
             gameCtx.fillText(`COMBO`, comboX, comboY);
-            gameCtx.fillText(`${gameFailed ? 0 : combo}`, comboX + gameCtx.measureText("COMBO ").width /2 , comboY + 35); 
+            // --- Modification for Centered Combo Display ---
+            const comboText = `${gameFailed ? 0 : combo}`;
+            const comboTextWidth = gameCtx.measureText(comboText).width;
+            // Calculate the x position to center the combo text at the specified comboX coordinate
+            const centeredComboX = comboX - (comboTextWidth / 2);
+            // Draw the combo number centered at (comboX, comboY + offset)
+            gameCtx.fillText(comboText, centeredComboX, comboY + 35);
             gameCtx.font = settings.deviationFont;
             let devColor = 'white';
             if (currentHitDeviationString.includes('ms')) {
-                const ms = parseInt(currentHitDeviationString);
-                if (ms > 0) devColor = 'rgba(255,100,100,1)'; else if (ms < 0) devColor = 'rgba(100,100,255,1)'; else devColor = 'rgba(100,255,100,1)';
+                const ms = parseInt(currentHitDeviationString, 10);
+                if (ms > 0) devColor = 'rgba(255,100,100,1)';
+                else if (ms < 0) devColor = 'rgba(100,100,255,1)';
+                else devColor = 'rgba(100,255,100,1)';
             }
             gameCtx.fillStyle = devColor;
             gameCtx.fillText(currentHitDeviationString, comboX, comboY + 75);
         }
+
         function drawHitErrorBar() {
             if (!settings.hitErrorBar.enabled || !gameCanvas.width) return;
             const bar = settings.hitErrorBar;
             const playfieldStartX = getPlayfieldStartX();
             const playfieldActualWidth = settings.numLanes * settings.laneWidth;
-            const barActualX = playfieldStartX + (playfieldActualWidth / 2) + bar.x - (bar.width / 2); 
+            const barActualX = playfieldStartX + (playfieldActualWidth / 2) + bar.x - (bar.width / 2);
             const barCenterY = bar.y + bar.height / 2;
             const halfBarWidth = bar.width / 2;
             const maxDev = bar.maxDeviationMs;
             const centerX = barActualX + halfBarWidth;
-            
+
             const windows = getDynamicJudgmentWindows();
-            const colorBad = '#a38441', colorGood = '#baba2b', colorGreat = '#4dff4d', colorPerfect = '#00ffff', colorPerfectPlus = '#99ffff';
+            const colorBad = '#a38441',
+                colorGood = '#baba2b',
+                colorGreat = '#4dff4d',
+                colorPerfect = '#00ffff',
+                colorPerfectPlus = '#99ffff';
 
             const drawZone = (windowMs, color) => {
                 if (windowMs <= 0) return;
@@ -1878,13 +2499,15 @@
             gameCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             gameCtx.fillRect(centerX - 1, bar.y - 5, 2, bar.height + 10);
 
-            const now = performance.now(), tickLifetime = 4000, tickFadeDuration = 1000;
+            const now = performance.now(),
+                tickLifetime = 4000,
+                tickFadeDuration = 1000;
             bar.ticks = bar.ticks.filter(tick => (now - tick.spawnTime) < tickLifetime + tickFadeDuration);
             bar.ticks.forEach(tick => {
                 const age = now - tick.spawnTime;
                 let opacity = Math.max(0, 1 - (age > tickLifetime ? (age - tickLifetime) / tickFadeDuration : 0));
                 if (opacity <= 0) return;
-                const tickWindows = tick.windowsForColor || windows; 
+                const tickWindows = tick.windowsForColor || windows;
                 const normalizedDeviation = tick.deviation / maxDev;
                 let tickOffset = Math.max(-halfBarWidth, Math.min(halfBarWidth, normalizedDeviation * halfBarWidth));
                 const tickX = centerX + tickOffset - bar.tickWidth / 2;
@@ -1902,7 +2525,7 @@
             const avgDev = bar.displayAverageDeviation;
             let triangleOffset = (avgDev / maxDev) * halfBarWidth;
             triangleOffset = Math.max(-halfBarWidth, Math.min(halfBarWidth, triangleOffset));
-            
+
             const triangleCenterX = centerX + triangleOffset;
             const triangleHeight = bar.indicatorHeight;
             const triangleWidth = bar.indicatorWidth;
@@ -1921,27 +2544,28 @@
             const playfieldStartX = getPlayfieldStartX();
             const laneAreaWidth = settings.numLanes * settings.laneWidth;
             const hpBarActualX = playfieldStartX + laneAreaWidth;
-            const barWidth = settings.hpBar.width, barHeight = gameCanvas.height; 
+            const barWidth = settings.hpBar.width,
+                barHeight = gameCanvas.height;
 
-            gameCtx.fillStyle = `rgba(50, 50, 50, 0.5)`; 
+            gameCtx.fillStyle = `rgba(50, 50, 50, 0.5)`;
             gameCtx.fillRect(hpBarActualX, 0, barWidth, barHeight);
             const hpFillHeight = (hp / 100) * barHeight;
-            gameCtx.fillStyle = `rgba(135, 206, 250, 0.9)`; 
+            gameCtx.fillStyle = `rgba(135, 206, 250, 0.9)`;
             gameCtx.fillRect(hpBarActualX, barHeight - hpFillHeight, barWidth, hpFillHeight);
-            gameCtx.strokeStyle = `rgba(200, 200, 200, 0.7)`; 
+            gameCtx.strokeStyle = `rgba(200, 200, 200, 0.7)`;
             gameCtx.strokeRect(hpBarActualX, 0, barWidth, barHeight);
         }
-        
+
         function proceedWithInitializationAfterSettings() {
-            applySettingsToUI(); 
-            resetGameUIAndPrepare(); 
-            updatePersistentUI(); 
+            applySettingsToUI();
+            resetGameUIAndPrepare();
+            updatePersistentUI();
             updateSongMetadataDisplay();
             console.log("Application initialized with current settings.");
         }
 
         async function initializeApp() {
-            wallpaperCanvas.width = window.innerWidth; 
+            wallpaperCanvas.width = window.innerWidth;
             wallpaperCanvas.height = window.innerHeight;
 
             try {
@@ -1949,14 +2573,14 @@
                 if (response.ok) {
                     const loadedSettings = await response.json();
                     console.log("Successfully fetched settings.json");
-                    processLoadedSettings(loadedSettings); 
+                    processLoadedSettings(loadedSettings);
                 } else {
                     console.warn("settings.json not found. Using default settings.");
-                    processLoadedSettings({}); 
+                    processLoadedSettings({});
                 }
             } catch (error) {
                 console.error("Error fetching settings:", error, ". Using default settings.");
-                processLoadedSettings({}); 
+                processLoadedSettings({});
             }
             debugContainer.addEventListener('click', () => {
                 debugInfoEnabled = !debugInfoEnabled;
@@ -1969,7 +2593,7 @@
         }
 
         initializeApp();
-
     </script>
 </body>
+
 </html>
