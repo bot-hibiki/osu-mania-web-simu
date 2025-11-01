@@ -3,7 +3,7 @@
 A mania rythmgame simulator parody from osu!mania, mainly credits to LLMs.
 
 
-### [在线试玩点这里](https://bot-hibiki.github.io/osu-mania-web-simu/main.html])
+### [在线试玩点这里](https://bot-hibiki.github.io/osu-mania-web-simu/main.html)
 
 ### 原作者：[Bilibili@Tyarnl_679](https://space.bilibili.com/548916524/)
 
