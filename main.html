@@ -29,7 +29,12 @@
             margin: 0;
         }
         
+        h1{
+            color:  'white';
+        }
+
         body {
+            text-autospace: normal;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
@@ -323,7 +328,7 @@
             <div class="control-group column" style="margin-top: 15px;">
                 <div class="sub-group">
                     <label for="backgroundOpacity">背景图亮度:</label>
-                    <input type="range" id="backgroundOpacity" min="0" max="1" step="0.05" value="0.3">
+                    <input type="range" id="backgroundOpacity" min="0" max="1" step="0.01" value="0.2">
                     <span class="range-value" id="backgroundOpacityValue">0.15</span>
                 </div>
                 <div class="sub-group">
@@ -395,8 +400,8 @@
                 <label for="judgmentLineOffsetY">视觉判定线高度:</label> <input type="number" id="judgmentLineOffsetY" value="120" min="10" max="300" step="10">
             </div>
             <div class="control-group">
-                <label for="playAreaOpacity">拖尾长度:</label>
-                <input type="range" id="playAreaOpacity" min="0.1" max="1" step="0.05" value="0.95">
+                <label for="playAreaOpacity">余晖长度:</label>
+                <input type="range" id="playAreaOpacity" min="0.1" max="1" step="0.01" value="0.95">
                 <span class="range-value" id="playAreaOpacityValue">0.95</span>
             </div>
             <hr>
@@ -471,7 +476,7 @@
         <div class="controls-panel">
             <h3>提示</h3>
             <h4>如何游玩</h4>选择谱面文件（.osu格式）、BGM（音频）、背景图，检查按键绑定或使用触摸屏，按Start开始游玩<hr>
-            <h4>延迟调整</h4>建议从-70ms开始尝试，不同谱面、设备、浏览器延迟不同。<hr>
+            <h4>延迟调整</h4>建议从-70ms开始尝试，不同谱面、设备、浏览器延迟不同。<a href="https://www.reddit.com/r/audioengineering/comments/py8b2e/silence_added_to_mp3_files">（为什么？）</a><hr>
             <h4>快捷键</h4>
             <table>
                 <thead>
@@ -484,6 +489,8 @@
                     <tr><td>主键盘 4</td><td>提高流速</td></tr>
                     <tr><td>主键盘 -</td><td>减少音频延迟</td></tr>
                     <tr><td>主键盘 +</td><td>增加音频延迟</td></tr>
+                    <tr><td>Ctrl + =</td><td>网页整体放大</td></tr>
+                    <tr><td>Ctrl + -</td><td>网页整体缩小</td></tr>
                 </tbody>
             </table>
             <hr>
@@ -669,7 +676,7 @@
             hitDeviations: [],
             accEnable: true,
             accPos: {
-                x: 350,
+                x: 370,
                 y: 10
             },
             comboEnable: true,
@@ -899,7 +906,7 @@
         }
 
         function checkGameReady() {
-            if (osuFileLoaded && audioFileLoaded && backgroundFileLoaded) {
+            if (osuFileLoaded && audioFileLoaded) {
                 startButton.disabled = false;
                 restartButton.disabled = false;
             } else {
@@ -1612,13 +1619,13 @@
                     console.error("Error pausing audio player in endGame:", e);
                 }
             }
-
+            window.scrollTo(0,600);
             document.querySelectorAll('.hide-on-play').forEach(el => el.style.display = 'flex');
 
             let username = prompt("输入成绩页显示的用户名", "Guest");
-            if (!username) {
-                username = "Guest";
-            }
+            // if (!username) {
+            //     username = "Guest";
+            // }
 
             if (!failed) {
                 try {
@@ -1698,7 +1705,9 @@
 
             setTimeout(() => {
                 const resultsUrl = `results.html?${params}`;
-                const resultsWindow = window.open(resultsUrl, '_blank');
+                if (!gameFailed && username) {
+                    const resultsWindow = window.open(resultsUrl, '_blank');
+                }
 
                 if (!resultsWindow || resultsWindow.closed || typeof resultsWindow.closed === 'undefined') {
                     resultsMessageEl.innerHTML = "成绩结果页面打开失败了！<br>你可能忘了允许弹出窗口，或者点下面的按钮手动打开成绩结果页👇";
