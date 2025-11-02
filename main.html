@@ -1133,8 +1133,8 @@
                     if (trimmedLine.startsWith("Mode:")) mode = parseInt(trimmedLine.split(":")[1].trim());
                     if (trimmedLine.startsWith("AudioLeadIn:")) data.audioLeadIn = parseInt(trimmedLine.split(":")[1].trim()) || 0;
                 } else if (currentSection === "[Metadata]") {
-                    if (trimmedLine.startsWith("Title:")) data.title = trimmedLine.split(":")[1].trim();
-                    if (trimmedLine.startsWith("Artist:")) data.artist = trimmedLine.split(":")[1].trim();
+                    if (trimmedLine.startsWith("TitleUnicode:")) data.title = trimmedLine.split(":")[1].trim();
+                    if (trimmedLine.startsWith("ArtistUnicode:")) data.artist = trimmedLine.split(":")[1].trim();
                     if (trimmedLine.startsWith("Version:")) data.version = trimmedLine.split(":")[1].trim();
                 } else if (currentSection === "[Difficulty]") {
                     if (trimmedLine.startsWith("CircleSize:")) {
